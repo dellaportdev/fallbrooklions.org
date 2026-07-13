@@ -372,7 +372,8 @@ const getCalendarEvents = () => {
         locationAddress: set.locationAddress,
         room: set.room,
         links: set.links || [],
-        showInList: set.showInList
+        showInList: set.showInList,
+        isRecurring: true
     });
 
     if (typeof calendarRecurringEventSets !== 'undefined') {

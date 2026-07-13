@@ -37,7 +37,9 @@
             todayDateKey: getPacificTodayKey(),
             modalDateKey: null,
             isDayModalOpen: false,
-            showNextYearEvents: false
+            showNextYearEvents: false,
+            showRecurringEvents: true,
+            showHolidayEvents: true
         };
     };
 
@@ -52,6 +54,7 @@
                 <button
                     type="button"
                     class="event-date-rail"
+                    :style="getEventDateStyle(event)"
                     :aria-label="'Show ' + formatMonthYearForEvent(event) + ' on the calendar'"
                     @click="goToEventMonth(event)"
                 >
@@ -218,6 +221,7 @@
             <button
                 type="button"
                 class="minor-event-date"
+                :style="getEventDateStyle(event)"
                 :aria-label="'Show ' + formatMonthYearForEvent(event) + ' on the calendar'"
                 @click="goToEventMonth(event)"
             >
@@ -393,8 +397,14 @@
                     class="calendar-event-month-panel"
                     :aria-label="'Events for ' + thisMonthLabel"
                 >
-                    <header class="calendar-event-month-header">
-                        <p class="calendar-event-month-kicker">This Month</p>
+                    <header
+                        class="calendar-event-month-header"
+                        :style="getMonthHeaderStyle(0)"
+                    >
+                        <p class="calendar-event-month-kicker">
+                            This Month
+                        </p>
+
                         <h2 class="calendar-event-month-title">
                             {{ thisMonthLabel }}
                         </h2>
@@ -411,7 +421,7 @@
                         v-else
                         class="calendar-month-empty"
                     >
-                        No events scheduled for {{ thisMonthLabel }}.
+                        No events to show for {{ thisMonthLabel }}.
                     </p>
                 </section>
 
@@ -419,8 +429,14 @@
                     class="calendar-event-month-panel"
                     :aria-label="'Events for ' + nextMonthLabel"
                 >
-                    <header class="calendar-event-month-header">
-                        <p class="calendar-event-month-kicker">Next Month</p>
+                    <header
+                        class="calendar-event-month-header"
+                        :style="getMonthHeaderStyle(1)"
+                    >
+                        <p class="calendar-event-month-kicker">
+                            Next Month
+                        </p>
+
                         <h2 class="calendar-event-month-title">
                             {{ nextMonthLabel }}
                         </h2>
@@ -437,7 +453,7 @@
                         v-else
                         class="calendar-month-empty"
                     >
-                        No events scheduled for {{ nextMonthLabel }}.
+                        No events to show for {{ nextMonthLabel }}.
                     </p>
                 </section>
             </div>
@@ -447,13 +463,42 @@
                 class="calendar-continuing-events"
             >
                 <div class="calendar-continuing-heading">
-                    <p class="calendar-event-month-kicker">
-                        Continuing Calendar
-                    </p>
+                    <div>
+                        <p class="calendar-event-month-kicker">
+                            Continuing Calendar
+                        </p>
 
-                    <h2 class="calendar-continuing-title">
-                        Later Events
-                    </h2>
+                        <h2 class="calendar-continuing-title">
+                            Later Events
+                        </h2>
+                    </div>
+
+                    <div
+                        class="calendar-continuing-filters"
+                        aria-label="Filter later events"
+                    >
+                        <label class="calendar-continuing-filter">
+                            <input
+                                type="checkbox"
+                                v-model="showRecurringEvents"
+                            >
+
+                            <span>
+                                Recurring events
+                            </span>
+                        </label>
+
+                        <label class="calendar-continuing-filter">
+                            <input
+                                type="checkbox"
+                                v-model="showHolidayEvents"
+                            >
+
+                            <span>
+                                Holidays and observances
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
                 <section
@@ -619,6 +664,8 @@
             modalDateKey: initial.modalDateKey,
             isDayModalOpen: initial.isDayModalOpen,
             showNextYearEvents: initial.showNextYearEvents,
+            showRecurringEvents: initial.showRecurringEvents,
+            showHolidayEvents: initial.showHolidayEvents,
 
             get currentYearIndex() {
                 return this.years.indexOf(this.activeYear);
@@ -675,6 +722,23 @@
 
                 return cells;
             },
+
+            get filteredEvents() {
+                return this.events.filter(event => {
+                    if (!this.showRecurringEvents && event.isRecurring) {
+                        return false;
+                    }
+
+                    if (
+                        !this.showHolidayEvents &&
+                        this.isHolidayEvent(event)
+                    ) {
+                        return false;
+                    }
+
+                    return true;
+                });
+            },            
 
             get thisMonthLabel() {
                 return this.getRelativeMonthInfo(0).label;
@@ -739,7 +803,7 @@
             get modalEvents() {
                 if (!this.modalDateKey) return [];
 
-                return this.events
+                return this.filteredEvents
                     .filter(event => {
                         return getEventDateKey(event) ===
                             this.modalDateKey;
@@ -823,6 +887,173 @@
                 };
             },
 
+            // Applies a subtle month-specific tint to an event date button.
+            getEventDateStyle(event) {
+                const start = parseLocalDateTime(event.start);
+
+                if (!start) {
+                    return {};
+                }
+
+                const accent = monthAccentColors[start.getMonth()];
+                const strongTint = setColorAlpha(accent.from, 0.18);
+                const lightTint = setColorAlpha(accent.from, 0.07);
+                const borderTint = setColorAlpha(accent.from, 0.32);
+
+                return {
+                    background: `
+            linear-gradient(
+                145deg,
+                ${strongTint} 0%,
+                ${lightTint} 58%,
+                rgba(255, 255, 255, 0.96) 100%
+            )
+        `,
+                    borderColor: borderTint
+                };
+            },
+            
+            // Gets the seasonal accent colors for a month index.
+            getMonthAccent(monthIndex) {
+                const accents = [
+                    {
+                        from: 'rgba(59, 130, 246, 0.48)',
+                        middle: 'rgba(219, 234, 254, 0.78)'
+                    }, // January — ice blue
+                    {
+                        from: 'rgba(236, 72, 153, 0.42)',
+                        middle: 'rgba(252, 231, 243, 0.78)'
+                    }, // February — rose
+                    {
+                        from: 'rgba(34, 197, 94, 0.42)',
+                        middle: 'rgba(220, 252, 231, 0.78)'
+                    }, // March — green
+                    {
+                        from: 'rgba(168, 85, 247, 0.42)',
+                        middle: 'rgba(243, 232, 255, 0.78)'
+                    }, // April — lavender
+                    {
+                        from: 'rgba(16, 185, 129, 0.44)',
+                        middle: 'rgba(209, 250, 229, 0.78)'
+                    }, // May — emerald
+                    {
+                        from: 'rgba(14, 165, 233, 0.44)',
+                        middle: 'rgba(224, 242, 254, 0.78)'
+                    }, // June — sky blue
+                    {
+                        from: 'rgba(250, 204, 21, 0.55)',
+                        middle: 'rgba(254, 249, 195, 0.82)'
+                    }, // July — bright gold
+                    {
+                        from: 'rgba(249, 115, 22, 0.52)',
+                        middle: 'rgba(255, 237, 213, 0.82)'
+                    }, // August — orange
+                    {
+                        from: 'rgba(217, 119, 6, 0.48)',
+                        middle: 'rgba(254, 243, 199, 0.80)'
+                    }, // September — ochre
+                    {
+                        from: 'rgba(234, 88, 12, 0.50)',
+                        middle: 'rgba(255, 237, 213, 0.80)'
+                    }, // October — harvest orange
+                    {
+                        from: 'rgba(146, 64, 14, 0.44)',
+                        middle: 'rgba(254, 243, 199, 0.72)'
+                    }, // November — brown
+                    {
+                        from: 'rgba(22, 163, 74, 0.44)',
+                        middle: 'rgba(220, 252, 231, 0.76)'
+                    } // December — evergreen
+                ];
+
+                return accents[monthIndex];
+            },
+
+            // Builds the seasonal top-right gradient for a featured month.
+            getMonthHeaderStyle(offset) {
+                const month = this.getRelativeMonthInfo(offset);
+                const accent = this.getMonthAccent(month.monthIndex);
+
+                return {
+                    background: `
+            radial-gradient(
+                circle at 100% 0%,
+                ${accent.from} 0%,
+                ${accent.middle} 32%,
+                rgba(255, 255, 255, 0) 68%
+            ),
+            #fff
+        `
+                };
+            },
+
+            // Applies a subtle month-specific tint to an event date button.
+            // If an event spans multiple months, show one month color in one
+            // diagonal corner and the other month color in the opposite corner.
+            getEventDateStyle(event) {
+                const start = parseLocalDateTime(event.start);
+                if (!start) return {};
+
+                const end = parseLocalDateTime(event.end);
+
+                const setColorAlpha = (color, alpha) => {
+                    const values = color.match(/[\d.]+/g);
+
+                    return values && values.length >= 3
+                        ? `rgba(${values[0]}, ${values[1]}, ${values[2]}, ${alpha})`
+                        : color;
+                };
+
+                const startAccent = this.getMonthAccent(start.getMonth());
+                const spansMultipleMonths = Boolean(
+                    end &&
+                    (
+                        start.getFullYear() !== end.getFullYear() ||
+                        start.getMonth() !== end.getMonth()
+                    )
+                );
+
+                if (spansMultipleMonths) {
+                    const endAccent = this.getMonthAccent(end.getMonth());
+
+                    return {
+                        background: `
+                radial-gradient(
+                    circle at 0% 0%,
+                    ${setColorAlpha(startAccent.from, 0.26)} 0%,
+                    ${setColorAlpha(startAccent.from, 0.10)} 34%,
+                    rgba(255, 255, 255, 0) 62%
+                ),
+                radial-gradient(
+                    circle at 100% 100%,
+                    ${setColorAlpha(endAccent.from, 0.26)} 0%,
+                    ${setColorAlpha(endAccent.from, 0.10)} 34%,
+                    rgba(255, 255, 255, 0) 62%
+                ),
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.98) 0%,
+                    rgba(255, 255, 255, 0.94) 100%
+                )
+            `,
+                        borderColor: setColorAlpha(startAccent.from, 0.28),
+                        boxShadow: `inset 0 0 0 1px ${setColorAlpha(endAccent.from, 0.12)}`
+                    };
+                }
+
+                return {
+                    background: `
+            linear-gradient(
+                145deg,
+                ${setColorAlpha(startAccent.from, 0.18)} 0%,
+                ${setColorAlpha(startAccent.from, 0.07)} 58%,
+                rgba(255, 255, 255, 0.96) 100%
+            )
+        `,
+                    borderColor: setColorAlpha(startAccent.from, 0.32)
+                };
+            },      
+
             // Groups events chronologically by month within a restricted year range.
             getMonthGroups({
                 startYear,
@@ -844,7 +1075,7 @@
                     59
                 );
 
-                this.events.forEach(event => {
+                this.filteredEvents.forEach(event => {
                     const start = parseLocalDateTime(event.start);
 
                     if (
@@ -885,9 +1116,9 @@
                 }));
             },
 
-            // Gets all events for one calendar month.
+            // Gets visible events for one calendar month.
             getEventsForMonth(year, monthIndex) {
-                return this.events
+                return this.filteredEvents
                     .filter(event => {
                         const start = parseLocalDateTime(event.start);
 
@@ -901,9 +1132,9 @@
                     });
             },
 
-            // Gets all events for one calendar date.
+            // Gets visible events for one calendar date.
             getEventsForDate(year, monthIndex, day) {
-                return this.events
+                return this.filteredEvents
                     .filter(event => {
                         const start = parseLocalDateTime(event.start);
 
@@ -1128,6 +1359,28 @@
             showNextYear() {
                 this.showNextYearEvents = true;
             },
+
+            // Checks whether an event is a holiday or general observance.
+            isHolidayEvent(event) {
+                return [
+                    'federal-holiday',
+                    'california-holiday',
+                    'observance'
+                ].includes(event.category);
+            },
+
+            // Checks whether an event should appear in the continuing schedule.
+            shouldShowContinuingEvent(event) {
+                if (!this.showRecurringEvents && event.isRecurring) {
+                    return false;
+                }
+
+                if (!this.showHolidayEvents && this.isHolidayEvent(event)) {
+                    return false;
+                }
+
+                return true;
+            },            
 
             // Opens a read-only modal containing every event on a calendar day.
             openDayModal(cell) {

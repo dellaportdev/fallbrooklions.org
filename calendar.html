@@ -260,7 +260,13 @@
         }
 
         .calendar-event-month-header {
-            @apply border-b border-gray-200 bg-white px-5 py-4;
+            @apply relative overflow-hidden border-b border-gray-200 px-5 py-4;
+            background-color: white;
+        }
+
+        .calendar-event-month-kicker,
+        .calendar-event-month-title {
+            @apply relative z-10;
         }
 
         .calendar-event-month-kicker {
@@ -381,7 +387,7 @@
         }
 
         .event-date-rail {
-            @apply flex h-fit w-full cursor-pointer appearance-none flex-col items-center justify-center self-start rounded-xl border border-gray-200 bg-slate-50 px-2 py-3 text-center text-gray-800 transition;
+            @apply flex h-fit w-full cursor-pointer appearance-none flex-col items-center justify-center self-start rounded-xl border px-2 py-3 text-center text-gray-800 transition;
             font: inherit;
         }
 
@@ -478,14 +484,16 @@
         }
 
         .minor-event-date {
-            @apply flex h-14 w-full cursor-pointer appearance-none flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-center transition;
+            @apply flex h-14 w-full cursor-pointer appearance-none flex-col items-center justify-center rounded-lg border text-center transition;
             font: inherit;
         }
 
+        .event-date-rail:hover,
         .minor-event-date:hover {
-            @apply border-blue-300 bg-blue-50;
+            filter: saturate(1.15) brightness(0.97);
         }
 
+        .event-date-rail:focus-visible,
         .minor-event-date:focus-visible {
             @apply outline-none ring-4 ring-blue-900/20;
         }
@@ -588,6 +596,58 @@
 
         .calendar-day-modal-location > i {
             @apply mt-1 text-yellow-500;
+        }
+
+        .calendar-continuing-heading {
+            @apply mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between;
+        }
+
+        .calendar-continuing-filters {
+            @apply flex flex-wrap items-center gap-x-4 gap-y-2;
+        }
+
+        .calendar-continuing-filter {
+            @apply inline-flex cursor-pointer select-none items-center gap-2 text-sm font-semibold text-gray-600;
+        }
+
+        .calendar-continuing-filter:hover {
+            @apply text-[#014d93];
+        }
+
+        .calendar-continuing-filter input {
+            @apply h-4 w-4 cursor-pointer rounded border-gray-300 text-[#014d93] accent-[#014d93];
+        }
+
+        .calendar-continuing-filter input:focus-visible {
+            @apply outline-none ring-4 ring-blue-900/20;
+        }
+
+        .calendar-global-filters {
+            @apply flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3;
+        }
+
+        .calendar-global-filters-label {
+            @apply text-xs font-black uppercase tracking-widest text-gray-500;
+        }
+
+        .calendar-continuing-filters {
+            @apply flex flex-wrap items-center gap-x-4 gap-y-2;
+        }
+
+        .calendar-continuing-filter {
+            @apply inline-flex cursor-pointer select-none items-center gap-2 text-sm font-semibold text-gray-600;
+        }
+
+        .calendar-continuing-filter:hover {
+            @apply text-[#014d93];
+        }
+
+        .calendar-continuing-filter input {
+            @apply h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#014d93];
+        }
+
+        .calendar-continuing-filter input:focus-visible {
+            @apply outline-none ring-4 ring-blue-900/20;
         }
 
         /* Mobile */
@@ -852,6 +912,20 @@
             </div>
 
             <section class="section-card-compact" aria-label="Upcoming calendar events">
+                <div class="calendar-global-filters" aria-label="Filter calendar events">
+                    <label class="calendar-continuing-filter">
+                        <input type="checkbox" v-model="showRecurringEvents">
+
+                        <span>Recurring events</span>
+                    </label>
+
+                    <label class="calendar-continuing-filter">
+                        <input type="checkbox" v-model="showHolidayEvents">
+
+                        <span>Holidays and observances</span>
+                    </label>
+                </div>
+
                 <div class="divider calendar-details-divider my-4">
                     <span class="divider-label">Upcoming Events</span>
                 </div>
