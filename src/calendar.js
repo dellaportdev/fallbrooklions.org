@@ -36,7 +36,8 @@
             activeMonthIndex: activeYear === currentYear ? currentMonthIndex : 0,
             todayDateKey: getPacificTodayKey(),
             modalDateKey: null,
-            isDayModalOpen: false
+            isDayModalOpen: false,
+            showNextYearEvents: false
         };
     };
 
@@ -373,7 +374,7 @@
             </div>
 
             <section
-                v-if="laterMonthGroups.length"
+                v-if="laterMonthGroups.length || hasNextYearEvents"
                 class="calendar-continuing-events"
             >
                 <div class="calendar-continuing-heading">
@@ -399,6 +400,39 @@
                         ${getEventItemsTemplate('group.events')}
                     </div>
                 </section>
+
+                <div
+                    v-if="hasNextYearEvents && !showNextYearEvents"
+                    class="calendar-show-more-wrap mt-4 text-center"
+                >
+                    <button
+                        type="button"
+                        class="calendar-show-more"
+                        @click="showNextYear"
+                    >
+                        Show {{ scheduleNextYear }} events
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div
+                    v-if="showNextYearEvents"
+                    class="calendar-next-year-events mt-4"
+                >
+                    <section
+                        v-for="group in nextYearMonthGroups"
+                        class="calendar-continuing-month"
+                        :aria-label="'Events for ' + group.label"
+                    >
+                        <h3 class="calendar-continuing-month-title">
+                            {{ group.label }}
+                        </h3>
+
+                        <div class="calendar-continuing-list">
+                            ${getEventItemsTemplate('group.events')}
+                        </div>
+                    </section>
+                </div>
             </section>
         </div>
 
@@ -459,6 +493,13 @@
                         </p>
 
                         <p
+                            v-if="isPastEvent(event)"
+                            class="event-past-notice"
+                        >
+                            This event has passed.
+                        </p>
+
+                        <p
                             v-if="event.summary"
                             class="calendar-day-modal-summary"
                         >
@@ -508,6 +549,7 @@
             todayDateKey: initial.todayDateKey,
             modalDateKey: initial.modalDateKey,
             isDayModalOpen: initial.isDayModalOpen,
+            showNextYearEvents: initial.showNextYearEvents,
 
             get currentYearIndex() {
                 return this.years.indexOf(this.activeYear);
@@ -591,45 +633,38 @@
                 );
             },
 
+            get scheduleCurrentYear() {
+                return getPacificTodayParts().year;
+            },
+
+            get scheduleNextYear() {
+                const currentYear = this.scheduleCurrentYear;
+
+                return this.years.find(year => year > currentYear) || null;
+            },
+
             get laterMonthGroups() {
                 const firstLaterMonth = this.getRelativeMonthInfo(2);
-                const firstLaterDate = new Date(
-                    firstLaterMonth.year,
-                    firstLaterMonth.monthIndex,
-                    1
-                );
-                const groups = new Map();
 
-                this.events.forEach(event => {
-                    const start = parseLocalDateTime(event.start);
-
-                    if (!start || start < firstLaterDate) return;
-
-                    const key = `${start.getFullYear()}-${String(
-                        start.getMonth() + 1
-                    ).padStart(2, '0')}`;
-
-                    if (!groups.has(key)) {
-                        groups.set(key, {
-                            key,
-                            label: start.toLocaleDateString('en-US', {
-                                month: 'long',
-                                year: 'numeric'
-                            }),
-                            events: []
-                        });
-                    }
-
-                    groups.get(key).events.push(event);
+                return this.getMonthGroups({
+                    startYear: firstLaterMonth.year,
+                    startMonthIndex: firstLaterMonth.monthIndex,
+                    endYear: this.scheduleCurrentYear
                 });
+            },
 
-                return [...groups.values()].map(group => ({
-                    ...group,
-                    events: group.events.sort((a, b) => {
-                        return parseLocalDateTime(a.start) -
-                            parseLocalDateTime(b.start);
-                    })
-                }));
+            get nextYearMonthGroups() {
+                if (!this.scheduleNextYear) return [];
+
+                return this.getMonthGroups({
+                    startYear: this.scheduleNextYear,
+                    startMonthIndex: 0,
+                    endYear: this.scheduleNextYear
+                });
+            },
+
+            get hasNextYearEvents() {
+                return this.nextYearMonthGroups.length > 0;
             },
 
             get modalEvents() {
@@ -717,6 +752,68 @@
                         year: 'numeric'
                     })
                 };
+            },
+
+            // Groups events chronologically by month within a restricted year range.
+            getMonthGroups({
+                startYear,
+                startMonthIndex,
+                endYear
+            }) {
+                const groups = new Map();
+                const startDate = new Date(
+                    startYear,
+                    startMonthIndex,
+                    1
+                );
+                const endDate = new Date(
+                    endYear,
+                    11,
+                    31,
+                    23,
+                    59,
+                    59
+                );
+
+                this.events.forEach(event => {
+                    const start = parseLocalDateTime(event.start);
+
+                    if (
+                        !start ||
+                        start < startDate ||
+                        start > endDate
+                    ) {
+                        return;
+                    }
+
+                    const key = `${start.getFullYear()}-${String(
+                        start.getMonth() + 1
+                    ).padStart(2, '0')}`;
+
+                    if (!groups.has(key)) {
+                        groups.set(key, {
+                            key,
+                            label: start.toLocaleDateString(
+                                'en-US',
+                                {
+                                    month: 'long',
+                                    year: 'numeric'
+                                }
+                            ),
+                            events: []
+                        });
+                    }
+
+                    groups.get(key).events.push(event);
+                });
+
+                return [...groups.values()].map(group => ({
+                    ...group,
+                    events: group.events.sort((a, b) => {
+                        return parseLocalDateTime(a.start) -
+                            parseLocalDateTime(b.start);
+                    })
+                }));
             },
 
             // Gets all events for one calendar month.
@@ -909,6 +1006,11 @@
                             block: 'start'
                         });
                 });
+            },
+
+            // Reveals the next available calendar year.
+            showNextYear() {
+                this.showNextYearEvents = true;
             },
 
             // Opens a read-only modal containing every event on a calendar day.

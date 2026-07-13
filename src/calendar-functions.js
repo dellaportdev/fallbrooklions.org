@@ -88,6 +88,8 @@ const formatTime = date => date
 
 // Formats an event's available start or start/end time.
 const formatEventTime = event => {
+    if (event.allDay) return '';
+
     const start = parseLocalDateTime(event.start);
     const end = parseLocalDateTime(event.end);
 
@@ -95,7 +97,9 @@ const formatEventTime = event => {
 
     const startTime = formatTime(start);
 
-    if (!end || !hasTimeComponent(event.end)) return startTime;
+    if (!end || !hasTimeComponent(event.end)) {
+        return startTime;
+    }
 
     return `${startTime} – ${formatTime(end)}`;
 };
@@ -137,41 +141,160 @@ const formatEventDate = event => {
     return timeText ? `${dateText} · ${timeText}` : dateText;
 };
 
-// Builds generated federal holiday events from the holiday date map.
-const getFederalHolidayEvents = () => {
-    const holidays = [];
+// Formats an internal date key for holiday summaries.
+const formatHolidaySummaryDate = dateKey => {
+    const date = parseLocalDateTime(`${dateKey}T00:00:00`);
 
-    if (typeof federalHolidayDefinitions === 'undefined') return holidays;
-    if (typeof federalHolidayDatesByYear === 'undefined') return holidays;
+    return date
+        ? date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        })
+        : '';
+};
 
-    const buildHolidayEvent = (year, holidayKey, date) => {
-        const definition = federalHolidayDefinitions[holidayKey];
+// Builds official holidays, preferring the federal category when jurisdictions overlap.
+const getOfficialHolidayEvents = () => {
+    const holidaysByDate = new Map();
 
-        if (!definition) return null;
+    const addHoliday = ({
+        definition,
+        date,
+        observedDate = null,
+        jurisdiction
+    }) => {
+        if (!definition || !date) return;
 
-        return {
-            id: `${definition.slug}-${year}`,
-            title: definition.title,
-            category: 'holiday',
-            start: `${date}T00:00:00`,
-            end: `${date}T23:59:00`,
-            timezone: 'America/Los_Angeles',
-            summary: 'Federal holiday.',
-            showInList: false
-        };
+        const existing = holidaysByDate.get(date);
+
+        if (!existing) {
+            holidaysByDate.set(date, {
+                definition,
+                date,
+                observedDate,
+                jurisdictions: new Set([jurisdiction])
+            });
+
+            return;
+        }
+
+        existing.jurisdictions.add(jurisdiction);
+
+        if (jurisdiction === 'federal') {
+            existing.definition = definition;
+            existing.observedDate = observedDate;
+        }
     };
 
-    Object.entries(federalHolidayDatesByYear).forEach(([year, dates]) => {
-        Object.entries(dates).forEach(([holidayKey, date]) => {
-            const holiday = buildHolidayEvent(year, holidayKey, date);
+    if (
+        typeof federalHolidayDefinitions !== 'undefined' &&
+        typeof federalHolidayDatesByYear !== 'undefined'
+    ) {
+        Object.values(federalHolidayDatesByYear).forEach(dates => {
+            Object.entries(dates).forEach(([holidayKey, holidayDate]) => {
+                const definition = federalHolidayDefinitions[holidayKey];
+                const dateData = typeof holidayDate === 'string'
+                    ? { date: holidayDate }
+                    : holidayDate;
 
-            if (holiday) {
-                holidays.push(holiday);
-            }
+                addHoliday({
+                    definition,
+                    date: dateData.date,
+                    observedDate: dateData.observedDate || null,
+                    jurisdiction: 'federal'
+                });
+            });
+        });
+    }
+
+    if (
+        typeof californiaStateHolidayDefinitions !== 'undefined' &&
+        typeof californiaStateHolidayDatesByYear !== 'undefined'
+    ) {
+        Object.values(californiaStateHolidayDatesByYear).forEach(dates => {
+            Object.entries(dates).forEach(([holidayKey, date]) => {
+                addHoliday({
+                    definition: californiaStateHolidayDefinitions[holidayKey],
+                    date,
+                    jurisdiction: 'california'
+                });
+            });
+        });
+    }
+
+    return [...holidaysByDate.values()].map(holiday => {
+        const isFederal = holiday.jurisdictions.has('federal');
+        const isCalifornia = holiday.jurisdictions.has('california');
+        const summaryParts = [];
+
+        if (isFederal && isCalifornia) {
+            summaryParts.push('Federal holiday and California state holiday.');
+        } else if (isFederal) {
+            summaryParts.push('Federal holiday.');
+        } else {
+            summaryParts.push('California state holiday.');
+        }
+
+        if (
+            holiday.observedDate &&
+            holiday.observedDate !== holiday.date
+        ) {
+            summaryParts.push(
+                `Observed by most federal employees on ${formatHolidaySummaryDate(holiday.observedDate)}.`
+            );
+        }
+
+        return {
+            id: `official-holiday-${holiday.definition.slug}-${holiday.date}`,
+            title: holiday.definition.title,
+            category: isFederal
+                ? 'federal-holiday'
+                : 'california-holiday',
+            start: `${holiday.date}T00:00:00`,
+            end: `${holiday.date}T23:59:59`,
+            timezone: 'America/Los_Angeles',
+            summary: summaryParts.join(' '),
+            allDay: true,
+            showInList: false
+        };
+    });
+};
+
+// Builds common non-government calendar observances.
+const getCalendarObservanceEvents = () => {
+    const observances = [];
+
+    if (
+        typeof calendarObservanceDefinitions === 'undefined' ||
+        typeof calendarObservanceDatesByYear === 'undefined'
+    ) {
+        return observances;
+    }
+
+    Object.values(calendarObservanceDatesByYear).forEach(dates => {
+        Object.entries(dates).forEach(([observanceKey, date]) => {
+            const definition =
+                calendarObservanceDefinitions[observanceKey];
+
+            if (!definition) return;
+
+            observances.push({
+                id: `observance-${definition.slug}-${date}`,
+                title: definition.title,
+                category: 'observance',
+                start: `${date}T00:00:00`,
+                end: `${date}T23:59:59`,
+                timezone: 'America/Los_Angeles',
+                summary: definition.summary,
+                allDay: true,
+                showInList: false
+            });
         });
     });
 
-    return holidays;
+    return observances;
 };
 
 // Builds all recurring, single, and holiday events into one sorted array.
@@ -189,7 +312,8 @@ const getCalendarEvents = () => {
         locationName: set.locationName,
         locationAddress: set.locationAddress,
         room: set.room,
-        links: set.links || []
+        links: set.links || [],
+        showInList: set.showInList
     });
 
     if (typeof calendarRecurringEventSets !== 'undefined') {
@@ -201,9 +325,18 @@ const getCalendarEvents = () => {
     }
 
     return recurringEvents
-        .concat(typeof calendarSingleEvents !== 'undefined' ? calendarSingleEvents || [] : [])
-        .concat(getFederalHolidayEvents())
-        .sort((a, b) => parseLocalDateTime(a.start) - parseLocalDateTime(b.start));
+        .concat(
+            typeof calendarSingleEvents !== 'undefined'
+                ? calendarSingleEvents || []
+                : []
+        )
+        .concat(getOfficialHolidayEvents())
+        .concat(getCalendarObservanceEvents())
+        .sort(
+            (a, b) =>
+                parseLocalDateTime(a.start) -
+                parseLocalDateTime(b.start)
+        );
 };
 
 // Gets a known category or the fallback category.
