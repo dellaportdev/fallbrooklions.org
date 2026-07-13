@@ -50,7 +50,7 @@
             :id="'event-' + event.id"
             :class="getMajorEventClass(event)"
         >
-            <div class="event-date-column">
+            <div class="flex min-w-0 flex-col gap-2">
                 <button
                     type="button"
                     class="event-date-rail"
@@ -60,56 +60,56 @@
                 >
                     <div
                         v-if="!formatEventDateParts(event).isRange"
-                        class="event-date-single"
+                        class="event-date-single flex w-full flex-col items-center"
                     >
-                        <div class="event-date-rail-month">
+                        <div class="event-date-rail-month text-xs font-black uppercase tracking-widest text-navy">
                             {{ formatEventDateParts(event).start.month }}
                         </div>
 
-                        <div class="event-date-rail-day">
+                        <div class="event-date-rail-day mt-1 font-serif text-3xl font-black leading-none text-gray-900">
                             {{ formatEventDateParts(event).start.day }}
                         </div>
 
-                        <div class="event-date-rail-weekday">
+                        <div class="event-date-rail-weekday mt-1 text-xs font-black uppercase text-gray-500">
                             {{ formatEventDateParts(event).start.weekday }}
                         </div>
                     </div>
 
                     <div
                         v-else
-                        class="event-date-range"
+                        class="event-date-range flex w-full flex-col items-center gap-1"
                     >
-                        <div class="event-date-range-part">
-                            <div class="event-date-rail-month">
+                        <div class="flex w-full flex-col items-center">
+                            <div class="event-date-rail-month text-xs font-black uppercase tracking-widest text-navy">
                                 {{ formatEventDateParts(event).start.month }}
                             </div>
 
-                            <div class="event-date-rail-day">
+                            <div class="event-date-rail-day mt-1 font-serif font-black leading-none text-gray-900">
                                 {{ formatEventDateParts(event).start.day }}
                             </div>
 
-                            <div class="event-date-rail-weekday">
+                            <div class="event-date-rail-weekday mt-1 text-xs font-black uppercase text-gray-500">
                                 {{ formatEventDateParts(event).start.weekday }}
                             </div>
                         </div>
 
                         <div
-                            class="event-date-range-separator"
+                            class="event-date-range-separator my-1 text-[0.6rem] font-black uppercase tracking-widest text-gray-400"
                             aria-hidden="true"
                         >
                             to
                         </div>
 
-                        <div class="event-date-range-part">
-                            <div class="event-date-rail-month">
+                        <div class="flex w-full flex-col items-center">
+                            <div class="event-date-rail-month text-xs font-black uppercase tracking-widest text-navy">
                                 {{ formatEventDateParts(event).end.month }}
                             </div>
 
-                            <div class="event-date-rail-day">
+                            <div class="event-date-rail-day mt-1 font-serif font-black leading-none text-gray-900">
                                 {{ formatEventDateParts(event).end.day }}
                             </div>
 
-                            <div class="event-date-rail-weekday">
+                            <div class="event-date-rail-weekday mt-1 text-xs font-black uppercase text-gray-500">
                                 {{ formatEventDateParts(event).end.weekday }}
                             </div>
                         </div>
@@ -117,32 +117,34 @@
 
                     <div
                         v-if="formatEventDateParts(event).time"
-                        class="event-date-rail-time"
+                        class="event-date-rail-time mt-2 w-full border-t border-gray-200 pt-2 text-[0.7rem] font-black leading-snug text-gray-700"
                     >
                         {{ formatEventDateParts(event).time }}
                     </div>
                 </button>
 
                 <span
-                    :class="'calendar-category-badge calendar-category-badge-major ' + getCategory(event.category).badgeClass"
+                    :class="'calendar-category-badge w-full justify-center whitespace-normal px-2 text-center text-[0.65rem] leading-tight max-sm:mx-4 max-sm:mb-3 max-sm:w-fit max-sm:self-start ' + getCategory(event.category).badgeClass"
                 >
                     <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
                     {{ getCategory(event.category).label }}
                 </span>
             </div>
 
-            <div class="event-card-body">
-                <div class="event-card-top">
+            <div class="min-w-0 max-sm:p-4">
+                <div class="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
                     <div>
-                        <h3 class="event-title">{{ event.title }}</h3>
+                        <h3 class="text-lg font-bold text-navy md:text-xl">
+                            {{ event.title }}
+                        </h3>
 
-                        <p class="event-date-line">
+                        <p class="mt-1 text-sm font-semibold text-gray-500 max-sm:hidden">
                             {{ formatEventDate(event) }}
                         </p>
 
                         <span
                             v-if="isEventInProgress(event)"
-                            class="event-started-badge"
+                            class="mt-2 inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-gray-800"
                         >
                             <i class="fa-solid fa-hourglass-half"></i>
                             {{ getEventTimeRemainingLabel(event) }}
@@ -152,27 +154,27 @@
 
                 <p
                     v-if="isPastEvent(event)"
-                    class="event-past-notice"
+                    class="mt-3 rounded-lg border-l-4 border-gray-400 bg-gray-100 px-3 py-2 text-sm font-bold text-gray-600"
                 >
                     This event has already passed.
                 </p>
 
                 <p
                     v-if="event.summary"
-                    class="event-summary"
+                    class="mt-3 text-sm leading-relaxed text-gray-600 md:text-base"
                 >
                     {{ event.summary }}
                 </p>
 
                 <div
                     v-if="event.locationName || event.locationAddress || shouldShowLinks(event)"
-                    class="event-details-grid"
+                    class="mt-4 grid gap-3"
                 >
                     <div
                         v-if="event.locationName || event.locationAddress"
-                        class="event-location"
+                        class="flex items-start gap-3 rounded-xl bg-gray-50 p-3 text-sm text-gray-600"
                     >
-                        <i class="fa-solid fa-location-dot"></i>
+                        <i class="fa-solid fa-location-dot mt-1 text-yellow-500"></i>
 
                         <div>
                             <p class="font-bold text-gray-700">
@@ -185,7 +187,7 @@
 
                             <p
                                 v-if="event.room"
-                                class="event-room"
+                                class="mt-1 text-xs text-gray-500"
                             >
                                 {{ event.room }}
                             </p>
@@ -194,14 +196,14 @@
 
                     <div
                         v-if="shouldShowLinks(event)"
-                        class="event-links"
+                        class="flex flex-col gap-2 sm:flex-row sm:flex-wrap max-sm:grid max-sm:grid-cols-1"
                     >
                         <a
                             v-for="link in getVisibleLinks(event)"
                             :href="link.href"
                             target="_blank"
                             rel="noopener"
-                            class="event-link-button"
+                            class="event-link-button max-sm:w-full"
                         >
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             {{ link.label }}
@@ -225,233 +227,212 @@
                 :aria-label="'Show ' + formatMonthYearForEvent(event) + ' on the calendar'"
                 @click="goToEventMonth(event)"
             >
-                <span class="minor-event-date-month">
+                <span class="text-[0.65rem] font-black uppercase tracking-wider text-navy">
                     {{ formatEventDateParts(event).start.month }}
                 </span>
 
-                <span class="minor-event-date-day">
+                <span class="font-serif text-xl font-black leading-none text-gray-800">
                     {{ formatEventDateParts(event).start.day }}
                 </span>
             </button>
 
-            <div class="minor-event-body">
-                <div class="minor-event-heading">
-                    <h3 class="minor-event-title">{{ event.title }}</h3>
+            <div class="min-w-0">
+                <div class="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <h3 class="min-w-0 text-base font-bold leading-tight text-gray-800">
+                        {{ event.title }}
+                    </h3>
 
-                    <span :class="'calendar-category-badge calendar-category-badge-minor ' + getCategory(event.category).badgeClass">
+                    <span
+                        :class="'calendar-category-badge gap-1.5 px-2 py-0.5 text-[0.65rem] max-sm:self-start ' + getCategory(event.category).badgeClass"
+                    >
                         <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
                         {{ getCategory(event.category).label }}
                     </span>
                 </div>
 
-                <p class="minor-event-meta">
+                <p class="mt-1 text-sm font-semibold text-gray-500">
                     {{ formatEventDate(event) }}
                 </p>
 
                 <p
                     v-if="event.locationName"
-                    class="minor-event-location"
+                    class="mt-1 flex items-center gap-1.5 text-xs text-gray-500"
                 >
-                    <i class="fa-solid fa-location-dot"></i>
+                    <i class="fa-solid fa-location-dot text-yellow-500"></i>
                     {{ event.locationName }}
                 </p>
             </div>
         </article>
     `;
 
-    // Builds a chronological mixed list of major and minor events.
-    const getEventItemsTemplate = (
-        eventsExpression,
-        demotePastEvents = false
-    ) => {
-        const majorCondition = demotePastEvents
-            ? 'isMajorEvent(event) && !isPastEvent(event)'
-            : 'isMajorEvent(event)';
-
-        return `
-        <div
-            v-for="event in ${eventsExpression}"
-            class="calendar-event-entry"
-        >
-            ${getMajorEventTemplate(majorCondition)}
-            ${getMinorEventTemplate()}
-        </div>
-    `;
-    };
-
     const getCalendarTemplate = () => `
-        <div
-            class="calendar-scroll-viewport"
-            id="calendar-scroll-viewport"
-        >
-            <div class="calendar-scroll-track">
-                <section
-                    class="calendar-month-panel"
-                    :aria-label="monthNames[activeMonthIndex] + ' ' + activeYear"
-                >
-                    <div class="calendar-month-header calendar-month-header-controls">
-                        <div class="calendar-month-nav">
-                            <button
-                                type="button"
-                                class="calendar-month-button"
-                                id="calendar-prev-month"
-                                :disabled="isFirstAvailableMonth"
-                                @click="previousMonth"
+        <div id="calendar-scroll-viewport">
+            <section
+                class="bg-white"
+                :aria-label="monthNames[activeMonthIndex] + ' ' + activeYear"
+            >
+                <header class="border-b border-gray-200 bg-slate-50 p-4">
+                    <div class="calendar-month-nav grid items-center gap-3 max-sm:grid-cols-2 max-sm:gap-2">
+                        <button
+                            type="button"
+                            class="calendar-control-button gap-2 border px-4 py-2 text-sm max-sm:w-full max-sm:min-w-0 max-sm:px-2 max-sm:text-xs"
+                            id="calendar-prev-month"
+                            :disabled="isFirstAvailableMonth"
+                            @click="previousMonth"
+                        >
+                            <i class="fa-solid fa-chevron-left"></i>
+                            <span class="max-sm:truncate">Previous</span>
+                        </button>
+
+                        <div class="order-first col-span-2 flex min-w-0 flex-nowrap items-center justify-center gap-2 sm:order-none sm:col-span-1 sm:gap-3">
+                            <div
+                                class="calendar-month-label whitespace-nowrap font-serif font-extrabold leading-none text-navy max-sm:text-center"
+                                id="calendar-current-month-label"
                             >
-                                <i class="fa-solid fa-chevron-left"></i>
-                                <span>Previous</span>
-                            </button>
-
-                            <div class="calendar-month-center calendar-month-center-inline">
-                                <div
-                                    class="calendar-month-label"
-                                    id="calendar-current-month-label"
-                                >
-                                    {{ monthNames[activeMonthIndex] }}
-                                </div>
-
-                                <select
-                                    id="calendar-year-select"
-                                    class="calendar-year-select calendar-year-select-inline"
-                                    aria-label="Select calendar year"
-                                    v-model.number="activeYear"
-                                    @change="changeYear"
-                                >
-                                    <option
-                                        v-for="year in years"
-                                        :value="year"
-                                    >
-                                        {{ year }}
-                                    </option>
-                                </select>
-
-                                <button
-                                    type="button"
-                                    class="calendar-today-button"
-                                    title="Return to today"
-                                    aria-label="Return to today"
-                                    :disabled="!canGoToToday"
-                                    @click="goToToday"
-                                >
-                                    <i class="fa-solid fa-calendar-day"></i>
-                                </button>
+                                {{ monthNames[activeMonthIndex] }}
                             </div>
+
+                            <select
+                                id="calendar-year-select"
+                                class="calendar-year-select-inline min-h-11 rounded-xl border-2 border-blue-200 bg-white px-3 py-1 pr-8 font-black leading-none text-navy focus:border-navy focus:outline-none focus:ring-4 focus:ring-blue-900/20 max-sm:min-h-10 max-sm:px-2.5 max-sm:py-1 max-sm:pr-7"
+                                aria-label="Select calendar year"
+                                v-model.number="activeYear"
+                                @change="changeYear"
+                            >
+                                <option
+                                    v-for="year in years"
+                                    :value="year"
+                                >
+                                    {{ year }}
+                                </option>
+                            </select>
 
                             <button
                                 type="button"
-                                class="calendar-month-button"
-                                id="calendar-next-month"
-                                :disabled="isLastAvailableMonth"
-                                @click="nextMonth"
+                                class="calendar-control-button h-11 w-11 shrink-0 text-lg max-sm:h-10 max-sm:w-10 max-sm:text-base"
+                                title="Return to today"
+                                aria-label="Return to today"
+                                :disabled="!canGoToToday"
+                                @click="goToToday"
                             >
-                                <span>Next</span>
-                                <i class="fa-solid fa-chevron-right"></i>
+                                <i class="fa-solid fa-calendar-day"></i>
                             </button>
                         </div>
+
+                        <button
+                            type="button"
+                            class="calendar-control-button gap-2 border px-4 py-2 text-sm max-sm:w-full max-sm:min-w-0 max-sm:px-2 max-sm:text-xs"
+                            id="calendar-next-month"
+                            :disabled="isLastAvailableMonth"
+                            @click="nextMonth"
+                        >
+                            <span class="max-sm:truncate">Next</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="relative isolate grid grid-cols-7 gap-px bg-gray-200">
+                    <div
+                        v-for="dayName in dayNames"
+                        class="bg-gray-100 px-2 py-3 text-center text-xs font-black uppercase tracking-wider text-gray-500 max-sm:px-1 max-sm:py-2 max-sm:text-[0.65rem]"
+                    >
+                        {{ dayName }}
                     </div>
 
-                    <div class="calendar-month-grid">
+                    <div
+                        v-for="cell in visibleCalendarCells"
+                        :class="cell.classes"
+                        :data-date-key="cell.dateKey"
+                        :tabindex="cell.events.length ? 0 : null"
+                        :role="cell.events.length ? 'button' : null"
+                        :aria-label="cell.events.length ? getDayAriaLabel(cell) : null"
+                        @click="openDayModal(cell)"
+                        @keydown="handleDayKeydown(cell, $event)"
+                    >
                         <div
-                            v-for="dayName in dayNames"
-                            class="calendar-day-heading"
+                            v-if="cell.day"
+                            class="calendar-day-number mb-1 text-xs font-black text-gray-500"
                         >
-                            {{ dayName }}
+                            {{ cell.day }}
                         </div>
 
                         <div
-                            v-for="cell in visibleCalendarCells"
-                            :class="cell.classes"
-                            :data-date-key="cell.dateKey"
-                            :tabindex="cell.events.length ? 0 : null"
-                            :role="cell.events.length ? 'button' : null"
-                            :aria-label="cell.events.length ? getDayAriaLabel(cell) : null"
-                            @click="openDayModal(cell)"
-                            @keydown="handleDayKeydown(cell, $event)"
+                            v-for="event in cell.events"
+                            :class="getChipClass(event)"
+                            :title="event.title"
                         >
-                            <div
-                                v-if="cell.day"
-                                class="calendar-day-number"
-                            >
-                                {{ cell.day }}
-                            </div>
-
-                            <div
-                                v-for="event in cell.events"
-                                :class="getChipClass(event)"
-                                :title="event.title"
-                            >
-                                <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
-                                <span>{{ event.title }}</span>
-                            </div>
+                            <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
+                            <span>{{ event.title }}</span>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </div>
     `;
 
     const getEventListTemplate = () => `
-        <div class="calendar-event-overview">
-            <div class="calendar-featured-months">
+        <div class="space-y-8">
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <section
-                    class="calendar-event-month-panel"
+                    class="min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-slate-50"
                     :aria-label="'Events for ' + thisMonthLabel"
                 >
                     <header
-                        class="calendar-event-month-header"
+                        class="relative overflow-hidden border-b border-gray-200 bg-white px-5 py-4"
                         :style="getMonthHeaderStyle(0)"
                     >
-                        <p class="calendar-event-month-kicker">
+                        <p class="relative z-10 text-xs font-black uppercase tracking-widest text-blue-700">
                             This Month
                         </p>
 
-                        <h2 class="calendar-event-month-title">
+                        <h2 class="relative z-10 mt-1 font-serif text-2xl font-bold text-navy">
                             {{ thisMonthLabel }}
                         </h2>
                     </header>
 
                     <div
                         v-if="thisMonthEvents.length"
-                        class="calendar-event-month-list"
+                        class="space-y-3 p-4 max-sm:p-3"
                     >
                         ${getEventItemsTemplate('thisMonthEvents', true)}
                     </div>
 
                     <p
                         v-else
-                        class="calendar-month-empty"
+                        class="m-4 rounded-xl border border-dashed border-gray-300 bg-white p-5 text-sm font-semibold text-gray-500"
                     >
                         No events to show for {{ thisMonthLabel }}.
                     </p>
                 </section>
 
                 <section
-                    class="calendar-event-month-panel"
+                    class="min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-slate-50"
                     :aria-label="'Events for ' + nextMonthLabel"
                 >
                     <header
-                        class="calendar-event-month-header"
+                        class="relative overflow-hidden border-b border-gray-200 bg-white px-5 py-4"
                         :style="getMonthHeaderStyle(1)"
                     >
-                        <p class="calendar-event-month-kicker">
+                        <p class="relative z-10 text-xs font-black uppercase tracking-widest text-blue-700">
                             Next Month
                         </p>
 
-                        <h2 class="calendar-event-month-title">
+                        <h2 class="relative z-10 mt-1 font-serif text-2xl font-bold text-navy">
                             {{ nextMonthLabel }}
                         </h2>
                     </header>
 
                     <div
                         v-if="nextMonthEvents.length"
-                        class="calendar-event-month-list"
+                        class="space-y-3 p-4 max-sm:p-3"
                     >
                         ${getEventItemsTemplate('nextMonthEvents')}
                     </div>
 
                     <p
                         v-else
-                        class="calendar-month-empty"
+                        class="m-4 rounded-xl border border-dashed border-gray-300 bg-white p-5 text-sm font-semibold text-gray-500"
                     >
                         No events to show for {{ nextMonthLabel }}.
                     </p>
@@ -460,43 +441,39 @@
 
             <section
                 v-if="laterMonthGroups.length || hasNextYearEvents"
-                class="calendar-continuing-events"
+                class="border-t border-gray-200 pt-8"
             >
-                <div class="calendar-continuing-heading">
+                <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                        <p class="calendar-event-month-kicker">
+                        <p class="text-xs font-black uppercase tracking-widest text-blue-700">
                             Continuing Calendar
                         </p>
 
-                        <h2 class="calendar-continuing-title">
+                        <h2 class="mt-1 font-serif text-2xl font-bold text-navy">
                             Later Events
                         </h2>
                     </div>
 
                     <div
-                        class="calendar-continuing-filters"
+                        class="flex flex-wrap items-center gap-x-4 gap-y-2"
                         aria-label="Filter later events"
                     >
-                        <label class="calendar-continuing-filter">
+                        <label class="calendar-filter">
                             <input
                                 type="checkbox"
                                 v-model="showRecurringEvents"
                             >
 
-                            <span>
-                                Recurring events
-                            </span>
+                            <span>Recurring events</span>
                         </label>
 
-                        <label class="calendar-continuing-filter">
+                        <label class="calendar-filter">
                             <input
                                 type="checkbox"
                                 v-model="showHolidayEvents"
                             >
 
-                            <span>
-                                Holidays and observances
-                            </span>
+                            <span>Holidays and observances</span>
                         </label>
                     </div>
                 </div>
@@ -506,18 +483,21 @@
                     class="calendar-continuing-month"
                     :aria-label="'Events for ' + group.label"
                 >
-                    <h3 class="calendar-continuing-month-title">
+                    <h3
+                        class="mb-4 rounded-t-md border-b-2 px-2 pb-2 pt-1 font-serif text-xl font-bold text-gray-800"
+                        :style="getContinuingMonthHeadingStyle(group.events[0])"
+                    >
                         {{ group.label }}
                     </h3>
 
-                    <div class="calendar-continuing-list">
+                    <div class="space-y-3">
                         ${getEventItemsTemplate('group.events')}
                     </div>
                 </section>
 
                 <div
                     v-if="hasNextYearEvents && !showNextYearEvents"
-                    class="calendar-show-more-wrap mt-4 text-center"
+                    class="mt-4 text-center"
                 >
                     <button
                         type="button"
@@ -531,18 +511,18 @@
 
                 <div
                     v-if="showNextYearEvents"
-                    class="calendar-next-year-events mt-4"
+                    class="mt-4"
                 >
                     <section
                         v-for="group in nextYearMonthGroups"
                         class="calendar-continuing-month"
                         :aria-label="'Events for ' + group.label"
                     >
-                        <h3 class="calendar-continuing-month-title">
+                        <h3 class="mb-4 border-b-2 border-blue-100 pb-2 font-serif text-xl font-bold text-gray-800">
                             {{ group.label }}
                         </h3>
 
-                        <div class="calendar-continuing-list">
+                        <div class="space-y-3">
                             ${getEventItemsTemplate('group.events')}
                         </div>
                     </section>
@@ -563,15 +543,15 @@
                 aria-labelledby="calendar-day-modal-title"
                 @keydown="handleModalKeydown($event)"
             >
-                <header class="calendar-day-modal-header">
+                <header class="flex shrink-0 items-start justify-between gap-4 border-b border-gray-200 bg-slate-50 px-5 py-4 md:px-6 max-sm:px-4 max-sm:py-3">
                     <div>
-                        <p class="calendar-day-modal-kicker">
+                        <p class="text-xs font-black uppercase tracking-widest text-blue-700">
                             Calendar Events
                         </p>
 
                         <h2
                             id="calendar-day-modal-title"
-                            class="calendar-day-modal-title"
+                            class="mt-1 font-serif text-2xl font-bold text-navy md:text-3xl max-sm:text-xl"
                         >
                             {{ modalDateLabel }}
                         </h2>
@@ -588,13 +568,15 @@
                     </button>
                 </header>
 
-                <div class="calendar-day-modal-list">
+                <div class="space-y-4 overflow-y-auto p-5 md:p-6 max-sm:p-3">
                     <article
                         v-for="event in modalEvents"
-                        class="calendar-day-modal-event"
+                        class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm max-sm:p-4"
                     >
-                        <div class="calendar-day-modal-event-heading">
-                            <h3>{{ event.title }}</h3>
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                            <h3 class="text-xl font-bold text-navy md:text-2xl">
+                                {{ event.title }}
+                            </h3>
 
                             <span :class="'calendar-category-badge ' + getCategory(event.category).badgeClass">
                                 <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
@@ -602,29 +584,29 @@
                             </span>
                         </div>
 
-                        <p class="calendar-day-modal-date">
+                        <p class="mt-2 text-base font-bold text-gray-600">
                             {{ formatEventDate(event) }}
                         </p>
 
                         <p
                             v-if="isPastEvent(event)"
-                            class="event-past-notice"
+                            class="mt-3 rounded-lg border-l-4 border-gray-400 bg-gray-100 px-3 py-2 text-sm font-bold text-gray-600"
                         >
                             This event has passed.
                         </p>
 
                         <p
                             v-if="event.summary"
-                            class="calendar-day-modal-summary"
+                            class="mt-4 text-lg leading-relaxed text-gray-700 max-sm:text-base"
                         >
                             {{ event.summary }}
                         </p>
 
                         <div
                             v-if="event.locationName || event.locationAddress || event.room"
-                            class="calendar-day-modal-location"
+                            class="mt-4 flex items-start gap-3 rounded-xl bg-gray-50 p-4 text-base leading-relaxed text-gray-600"
                         >
-                            <i class="fa-solid fa-location-dot"></i>
+                            <i class="fa-solid fa-location-dot mt-1 text-yellow-500"></i>
 
                             <div>
                                 <p
@@ -648,6 +630,27 @@
             </section>
         </div>
     `;
+
+    // Builds a chronological mixed list of major and minor events.
+    const getEventItemsTemplate = (
+        eventsExpression,
+        demotePastEvents = false
+    ) => {
+        const majorCondition = demotePastEvents
+            ? 'isMajorEvent(event) && !isPastEvent(event)'
+            : 'isMajorEvent(event)';
+
+        return `
+        <div
+            v-for="event in ${eventsExpression}"
+            class="calendar-event-entry"
+        >
+            ${getMajorEventTemplate(majorCondition)}
+            ${getMinorEventTemplate()}
+        </div>
+    `;
+    };
+    
 
     // Creates the Petite Vue calendar view model.
     const calendarApp = () => {
@@ -886,87 +889,57 @@
                     })
                 };
             },
+            // Rebuilds an rgba color using the requested opacity.
+            setColorAlpha(color, alpha) {
+                const values = String(color).match(/[\d.]+/g);
 
-            // Applies a subtle month-specific tint to an event date button.
-            getEventDateStyle(event) {
-                const start = parseLocalDateTime(event.start);
+                if (!values || values.length < 3) {
+                    return color;
+                }
+
+                return `rgba(${values[0]}, ${values[1]}, ${values[2]}, ${alpha})`;
+            },
+
+            // Gets the seasonal accent color for a month index.
+            getMonthAccent(monthIndex) {
+                const accents = [
+                    'rgb(37, 99, 235)',    // January — clear winter blue
+                    'rgb(219, 39, 119)',   // February — vivid camellia pink
+                    'rgb(22, 163, 74)',    // March — bright spring green
+                    'rgb(124, 58, 237)',   // April — jacaranda violet
+                    'rgb(5, 150, 105)',    // May — saturated eucalyptus
+                    'rgb(2, 132, 199)',    // June — coastal sky blue
+                    'rgb(234, 179, 8)',    // July — strong sunshine yellow
+                    'rgb(234, 88, 12)',    // August — hot orange
+                    'rgb(202, 138, 4)',    // September — golden chaparral
+                    'rgb(220, 38, 38)',    // October — vivid sunset red
+                    'rgb(180, 83, 9)',     // November — warm copper
+                    'rgb(21, 128, 61)'     // December — rich evergreen
+                ];
+
+                return accents[monthIndex] || accents[0];
+            },
+
+            // Adds a restrained seasonal accent to later-month headings.
+            getContinuingMonthHeadingStyle(event) {
+                const start = event ? parseLocalDateTime(event.start) : null;
 
                 if (!start) {
                     return {};
                 }
 
-                const accent = monthAccentColors[start.getMonth()];
-                const strongTint = setColorAlpha(accent.from, 0.18);
-                const lightTint = setColorAlpha(accent.from, 0.07);
-                const borderTint = setColorAlpha(accent.from, 0.32);
+                const accent = this.getMonthAccent(start.getMonth());
 
                 return {
+                    borderBottomColor: this.setColorAlpha(accent, 0.65),
                     background: `
-            linear-gradient(
-                145deg,
-                ${strongTint} 0%,
-                ${lightTint} 58%,
-                rgba(255, 255, 255, 0.96) 100%
-            )
-        `,
-                    borderColor: borderTint
+			linear-gradient(
+				0deg,
+				${this.setColorAlpha(accent, 0.12)} 0%,
+				rgba(255, 255, 255, 0) 45%
+			)
+		`
                 };
-            },
-            
-            // Gets the seasonal accent colors for a month index.
-            getMonthAccent(monthIndex) {
-                const accents = [
-                    {
-                        from: 'rgba(59, 130, 246, 0.48)',
-                        middle: 'rgba(219, 234, 254, 0.78)'
-                    }, // January — ice blue
-                    {
-                        from: 'rgba(236, 72, 153, 0.42)',
-                        middle: 'rgba(252, 231, 243, 0.78)'
-                    }, // February — rose
-                    {
-                        from: 'rgba(34, 197, 94, 0.42)',
-                        middle: 'rgba(220, 252, 231, 0.78)'
-                    }, // March — green
-                    {
-                        from: 'rgba(168, 85, 247, 0.42)',
-                        middle: 'rgba(243, 232, 255, 0.78)'
-                    }, // April — lavender
-                    {
-                        from: 'rgba(16, 185, 129, 0.44)',
-                        middle: 'rgba(209, 250, 229, 0.78)'
-                    }, // May — emerald
-                    {
-                        from: 'rgba(14, 165, 233, 0.44)',
-                        middle: 'rgba(224, 242, 254, 0.78)'
-                    }, // June — sky blue
-                    {
-                        from: 'rgba(250, 204, 21, 0.55)',
-                        middle: 'rgba(254, 249, 195, 0.82)'
-                    }, // July — bright gold
-                    {
-                        from: 'rgba(249, 115, 22, 0.52)',
-                        middle: 'rgba(255, 237, 213, 0.82)'
-                    }, // August — orange
-                    {
-                        from: 'rgba(217, 119, 6, 0.48)',
-                        middle: 'rgba(254, 243, 199, 0.80)'
-                    }, // September — ochre
-                    {
-                        from: 'rgba(234, 88, 12, 0.50)',
-                        middle: 'rgba(255, 237, 213, 0.80)'
-                    }, // October — harvest orange
-                    {
-                        from: 'rgba(146, 64, 14, 0.44)',
-                        middle: 'rgba(254, 243, 199, 0.72)'
-                    }, // November — brown
-                    {
-                        from: 'rgba(22, 163, 74, 0.44)',
-                        middle: 'rgba(220, 252, 231, 0.76)'
-                    } // December — evergreen
-                ];
-
-                return accents[monthIndex];
             },
 
             // Builds the seasonal top-right gradient for a featured month.
@@ -976,34 +949,26 @@
 
                 return {
                     background: `
-            radial-gradient(
-                circle at 100% 0%,
-                ${accent.from} 0%,
-                ${accent.middle} 32%,
-                rgba(255, 255, 255, 0) 68%
-            ),
-            #fff
-        `
+			radial-gradient(
+				circle at 100% 0%,
+				${this.setColorAlpha(accent, 0.48)} 0%,
+				${this.setColorAlpha(accent, 0.16)} 32%,
+				rgba(255, 255, 255, 0) 68%
+			),
+			#fff
+		`
                 };
             },
 
-            // Applies a subtle month-specific tint to an event date button.
-            // If an event spans multiple months, show one month color in one
-            // diagonal corner and the other month color in the opposite corner.
+            // Applies month-specific colors to an event date button.
             getEventDateStyle(event) {
                 const start = parseLocalDateTime(event.start);
-                if (!start) return {};
+
+                if (!start) {
+                    return {};
+                }
 
                 const end = parseLocalDateTime(event.end);
-
-                const setColorAlpha = (color, alpha) => {
-                    const values = color.match(/[\d.]+/g);
-
-                    return values && values.length >= 3
-                        ? `rgba(${values[0]}, ${values[1]}, ${values[2]}, ${alpha})`
-                        : color;
-                };
-
                 const startAccent = this.getMonthAccent(start.getMonth());
                 const spansMultipleMonths = Boolean(
                     end &&
@@ -1018,41 +983,41 @@
 
                     return {
                         background: `
-                radial-gradient(
-                    circle at 0% 0%,
-                    ${setColorAlpha(startAccent.from, 0.26)} 0%,
-                    ${setColorAlpha(startAccent.from, 0.10)} 34%,
-                    rgba(255, 255, 255, 0) 62%
-                ),
-                radial-gradient(
-                    circle at 100% 100%,
-                    ${setColorAlpha(endAccent.from, 0.26)} 0%,
-                    ${setColorAlpha(endAccent.from, 0.10)} 34%,
-                    rgba(255, 255, 255, 0) 62%
-                ),
-                linear-gradient(
-                    145deg,
-                    rgba(255, 255, 255, 0.98) 0%,
-                    rgba(255, 255, 255, 0.94) 100%
-                )
-            `,
-                        borderColor: setColorAlpha(startAccent.from, 0.28),
-                        boxShadow: `inset 0 0 0 1px ${setColorAlpha(endAccent.from, 0.12)}`
+				radial-gradient(
+					circle at 0% 0%,
+					${this.setColorAlpha(startAccent, 0.26)} 0%,
+					${this.setColorAlpha(startAccent, 0.10)} 34%,
+					rgba(255, 255, 255, 0) 62%
+				),
+				radial-gradient(
+					circle at 100% 100%,
+					${this.setColorAlpha(endAccent, 0.26)} 0%,
+					${this.setColorAlpha(endAccent, 0.10)} 34%,
+					rgba(255, 255, 255, 0) 62%
+				),
+				linear-gradient(
+					145deg,
+					rgba(255, 255, 255, 0.98) 0%,
+					rgba(255, 255, 255, 0.94) 100%
+				)
+			`,
+                        borderColor: this.setColorAlpha(startAccent, 0.28),
+                        boxShadow: `inset 0 0 0 1px ${this.setColorAlpha(endAccent, 0.12)}`
                     };
                 }
 
                 return {
                     background: `
-            linear-gradient(
-                145deg,
-                ${setColorAlpha(startAccent.from, 0.18)} 0%,
-                ${setColorAlpha(startAccent.from, 0.07)} 58%,
-                rgba(255, 255, 255, 0.96) 100%
-            )
-        `,
-                    borderColor: setColorAlpha(startAccent.from, 0.32)
+			linear-gradient(
+				145deg,
+				${this.setColorAlpha(startAccent, 0.18)} 0%,
+				${this.setColorAlpha(startAccent, 0.07)} 58%,
+				rgba(255, 255, 255, 0.96) 100%
+			)
+		`,
+                    borderColor: this.setColorAlpha(startAccent, 0.32)
                 };
-            },      
+            },
 
             // Groups events chronologically by month within a restricted year range.
             getMonthGroups({

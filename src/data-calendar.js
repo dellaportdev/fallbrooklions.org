@@ -175,7 +175,7 @@ const calendarSingleEvents = [
 		start: '2026-02-21T10:00:00',
 		end: '2026-02-21T15:00:00',
 		timezone: 'America/Los_Angeles',
-		summary: 'Fundraiser supporting the club Sight Campaign, including eye exams and glasses for local elementary students in need.',
+		summary: 'Rummage sale fundraiser to benefit the Fallbrook Ranch Lions Club Sight Campaign, raising funds to provide vision services to local students.',
 		locationName: 'Community Health & Wellness Center',
 		locationAddress: '1636 E. Mission Rd., Fallbrook, CA 92028',
 		links: [
