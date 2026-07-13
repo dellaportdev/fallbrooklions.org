@@ -43,363 +43,680 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-    <script data-goatcounter="https://lionsclub.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://lionsclub.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
 	<script src="./src/data-calendar.js" defer></script>
+    <script src="https://unpkg.com/petite-vue@0.2.2/dist/petite-vue.iife.js" defer></script>
+	<script src="./src/calendar-functions.js" defer></script>
 	<script src="./src/calendar.js" defer></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <style type="text/tailwindcss">
-        @layer base {
-            :root {
-                --navy: #014d93;
-                --navy-dark: #013d78;
-                --gold: #facc15;
+<style type="text/tailwindcss">
+    @layer base {
+        :root {
+            --navy: #014d93;
+            --navy-dark: #013d78;
+            --gold: #facc15;
+        }
+
+        body.calendar-modal-open {
+            overflow: hidden;
+        }
+    }
+
+    @layer components {
+        /* Calendar container and loading state */
+
+        .calendar-grid-wrap {
+            @apply overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm;
+        }
+
+        .calendar-grid-loading {
+            @apply min-h-[607px];
+        }
+
+        .calendar-loading-panel {
+            @apply flex min-h-[607px] flex-col items-center justify-center gap-4 text-sm font-semibold text-gray-500;
+        }
+
+        .calendar-loading-spinner {
+            @apply h-10 w-10 rounded-full border-4 border-gray-200 border-t-blue-700;
+            animation: calendar-spin 0.8s linear infinite;
+        }
+
+        @keyframes calendar-spin {
+            to {
+                transform: rotate(360deg);
             }
         }
 
-        @layer components {
-            .calendar-page-shell {
-                @apply bg-gray-200 text-gray-700;
-            }
+        /* Month navigation */
 
-            .calendar-main {
-                @apply pt-16 md:pt-20 pb-8;
-            }
+        .calendar-scroll-viewport {
+            @apply overflow-visible;
+        }
 
-            .calendar-container {
-                @apply max-w-6xl mx-auto px-4 space-y-8;
-            }
+        .calendar-scroll-track {
+            @apply block;
+        }
 
-            .calendar-hero {
-                @apply hero-gradient rounded-xl px-6 py-10 md:px-10 md:py-12 text-center overflow-hidden relative;
-            }
+        .calendar-month-panel {
+            @apply bg-white;
+        }
 
-            .calendar-hero-kicker {
-                @apply text-xs font-bold uppercase tracking-widest text-white mb-2;
-            }
+        .calendar-month-header {
+            @apply border-b border-gray-200 bg-slate-50;
+        }
 
-            .calendar-hero-title {
-                @apply text-3xl md:text-4xl font-bold text-white leading-tight mb-3;
-            }
+        .calendar-month-header-controls {
+            @apply block p-4;
+        }
 
-            .calendar-hero-text {
-                @apply text-blue-200 text-md leading-relaxed max-w-2xl mx-auto;
-            }
+        .calendar-month-nav {
+            @apply grid items-center gap-3;
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(12rem, 3fr)
+                minmax(0, 1fr);
+        }
 
-            .calendar-grid-wrap {
-                @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden;
-            }
+        .calendar-month-button {
+            @apply inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2 text-sm font-extrabold text-blue-900 shadow-sm transition;
+        }
 
-            .calendar-month-panel {
-                @apply bg-white;
-            }
+        .calendar-month-button:hover:not(:disabled) {
+            @apply border-blue-300 bg-blue-50;
+        }
 
-            .calendar-month-header {
-                @apply bg-slate-50 border-b border-gray-200;
-            }
+        .calendar-month-button:focus-visible {
+            @apply outline-none ring-4 ring-blue-900/20;
+        }
 
-            .calendar-month-header-controls {
-                @apply block p-4;
-            }
+        .calendar-month-button:disabled {
+            @apply cursor-not-allowed opacity-40;
+        }
 
+        .calendar-month-center {
+            @apply flex min-w-0 flex-row flex-nowrap items-center justify-center gap-3;
+        }
+
+        .calendar-month-label {
+            @apply whitespace-nowrap font-extrabold leading-none text-[#014d93];
+            font-family: 'Lora', serif;
+            font-size: clamp(1.45rem, 4vw, 2.15rem);
+        }
+
+        .calendar-year-select-inline {
+            @apply min-h-11 rounded-xl border-2 border-blue-200 bg-white px-3 py-1 pr-8 font-black leading-none text-[#014d93];
+            font-size: clamp(1.15rem, 3vw, 1.55rem);
+        }
+
+        .calendar-year-select-inline:focus {
+            @apply border-[#014d93] outline-none ring-4 ring-blue-900/20;
+        }
+
+        .calendar-today-button {
+            @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-blue-200 bg-white text-lg text-[#014d93] shadow-sm transition;
+        }
+
+        .calendar-today-button:hover:not(:disabled) {
+            @apply border-blue-300 bg-blue-50;
+        }
+
+        .calendar-today-button:focus-visible {
+            @apply border-[#014d93] outline-none ring-4 ring-blue-900/20;
+        }
+
+        .calendar-today-button:disabled {
+            @apply cursor-not-allowed opacity-40;
+        }
+
+        /* Calendar grid */
+
+        .calendar-month-grid {
+            @apply relative isolate grid grid-cols-7 gap-px bg-gray-200;
+        }
+
+        .calendar-day-heading {
+            @apply bg-gray-100 px-2 py-3 text-center text-xs font-black uppercase tracking-wider text-gray-500;
+        }
+
+        .calendar-day {
+            @apply relative min-h-24 min-w-0 overflow-hidden bg-white p-2 text-sm transition;
+        }
+
+        .calendar-day-empty {
+            @apply bg-gray-50;
+        }
+
+        .calendar-day-number {
+            @apply mb-1 text-xs font-black text-gray-500;
+        }
+
+        .calendar-day-has-events {
+            @apply z-10 cursor-pointer touch-manipulation select-none bg-white;
+        }
+
+        .calendar-day-has-events:hover {
+            @apply bg-yellow-50;
+        }
+
+        .calendar-day-has-events:focus-visible {
+            @apply z-20 outline-none ring-4 ring-inset ring-blue-900/30;
+        }
+
+        .calendar-day-selected {
+            @apply ring-4 ring-inset ring-blue-900;
+        }
+
+        .calendar-day-today {
+            @apply bg-blue-50 ring-2 ring-inset ring-blue-200;
+        }
+
+        .calendar-day-today .calendar-day-number {
+            @apply inline-flex h-7 w-7 items-center justify-center rounded-full font-black text-blue-950;
+        }
+
+        .calendar-day-selected.calendar-day-today {
+            @apply ring-4 ring-inset ring-blue-900;
+        }
+
+        .calendar-chip {
+            @apply pointer-events-none mb-1 flex w-full min-w-0 items-center gap-1 rounded-lg border border-solid px-2 py-1 text-left text-xs font-bold leading-tight;
+        }
+
+        .calendar-chip span {
+            @apply min-w-0 truncate;
+        }
+
+        .calendar-chip-muted {
+            @apply opacity-60;
+        }
+
+        .calendar-category-badge {
+            @apply inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-xs font-black uppercase tracking-wide;
+        }
+
+        .calendar-category-badge-minor {
+            @apply gap-1.5 px-2 py-0.5 text-[0.65rem];
+        }
+
+        /* Lower event schedule */
+
+        .calendar-event-list {
+            @apply block;
+        }
+
+        .calendar-event-overview {
+            @apply space-y-8;
+        }
+
+        .calendar-featured-months {
+            @apply grid grid-cols-1 gap-6 lg:grid-cols-2;
+        }
+
+        .calendar-event-month-panel {
+            @apply min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-slate-50;
+        }
+
+        .calendar-event-month-header {
+            @apply border-b border-gray-200 bg-white px-5 py-4;
+        }
+
+        .calendar-event-month-kicker {
+            @apply text-xs font-black uppercase tracking-widest text-blue-700;
+        }
+
+        .calendar-event-month-title {
+            @apply mt-1 text-2xl font-bold text-[#014d93];
+            font-family: 'Lora', serif;
+        }
+
+        .calendar-event-month-list {
+            @apply space-y-3 p-4;
+        }
+
+        .calendar-month-empty {
+            @apply m-4 rounded-xl border border-dashed border-gray-300 bg-white p-5 text-sm font-semibold text-gray-500;
+        }
+
+        .calendar-event-entry {
+            @apply min-w-0;
+        }
+
+        /* Continuing event months */
+
+        .calendar-continuing-events {
+            @apply border-t border-gray-200 pt-8;
+        }
+
+        .calendar-continuing-heading {
+            @apply mb-6;
+        }
+
+        .calendar-continuing-title {
+            @apply mt-1 text-2xl font-bold text-[#014d93];
+            font-family: 'Lora', serif;
+        }
+
+        .calendar-continuing-month + .calendar-continuing-month {
+            @apply mt-8;
+        }
+
+        .calendar-continuing-month-title {
+            @apply mb-4 border-b-2 border-blue-100 pb-2 text-xl font-bold text-gray-800;
+            font-family: 'Lora', serif;
+        }
+
+        .calendar-continuing-list {
+            @apply space-y-3;
+        }
+
+        /* Major event cards */
+
+        .event-card {
+            @apply overflow-hidden rounded-xl border border-gray-200 bg-white p-4 shadow-sm;
+        }
+
+        .event-card-with-date {
+            @apply grid items-start gap-4;
+            grid-template-columns: 5.5rem minmax(0, 1fr);
+        }
+
+        .major-event-card {
+            @apply border-l-4 border-l-blue-700;
+        }
+
+        .event-card-body {
+            @apply min-w-0;
+        }
+
+        .event-card-past {
+            @apply opacity-70;
+        }
+
+        .event-date-rail {
+            @apply flex h-fit w-full cursor-pointer appearance-none flex-col items-center justify-center self-start rounded-xl border border-gray-200 bg-slate-50 px-2 py-3 text-center text-gray-800 transition;
+            font: inherit;
+        }
+
+        .event-date-rail:hover {
+            @apply border-blue-300 bg-blue-50;
+        }
+
+        .event-date-rail:focus-visible {
+            @apply outline-none ring-4 ring-blue-900/20;
+        }
+
+        .event-date-rail-month {
+            @apply text-xs font-black uppercase tracking-widest text-[#014d93];
+        }
+
+        .event-date-rail-day {
+            @apply mt-1 text-3xl font-black leading-none text-gray-900;
+            font-family: 'Lora', serif;
+        }
+
+        .event-date-rail-weekday {
+            @apply mt-1 text-xs font-black uppercase text-gray-500;
+        }
+
+        .event-date-rail-time {
+            @apply mt-2 w-full border-t border-gray-200 pt-2 text-[0.7rem] font-black leading-snug text-gray-700;
+        }
+
+        .event-card-past .event-date-rail {
+            @apply bg-gray-100 text-gray-500;
+        }
+
+        .event-card-top {
+            @apply flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between;
+        }
+
+        .event-title {
+            @apply text-lg font-bold text-[#014d93] md:text-xl;
+        }
+
+        .event-date-line {
+            @apply mt-1 text-sm font-semibold text-gray-500;
+        }
+
+        .event-past-notice {
+            @apply mt-3 rounded-lg border-l-4 border-gray-400 bg-gray-100 px-3 py-2 text-sm font-bold text-gray-600;
+        }
+
+        .event-summary {
+            @apply mt-3 text-sm leading-relaxed text-gray-600 md:text-base;
+        }
+
+        .event-details-grid {
+            @apply mt-4 grid gap-3;
+        }
+
+        .event-location {
+            @apply flex items-start gap-3 rounded-xl bg-gray-50 p-3 text-sm text-gray-600;
+        }
+
+        .event-location i {
+            @apply mt-1 text-yellow-500;
+        }
+
+        .event-room {
+            @apply mt-1 text-xs text-gray-500;
+        }
+
+        .event-links {
+            @apply flex flex-col gap-2 sm:flex-row sm:flex-wrap;
+        }
+
+        .event-link-button {
+            @apply inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm font-black text-[#014d93] shadow-sm transition;
+        }
+
+        .event-link-button:hover {
+            @apply bg-[#014d93] text-white;
+        }
+
+        .event-link-button:focus-visible {
+            @apply outline-none ring-4 ring-blue-900/20;
+        }
+
+        /* Compact minor events */
+
+        .minor-event-card {
+            @apply grid items-center gap-3 rounded-xl border border-gray-200 bg-white p-3;
+            grid-template-columns: 3.75rem minmax(0, 1fr);
+        }
+
+        .minor-event-card-past {
+            @apply opacity-60;
+        }
+
+        .minor-event-date {
+            @apply flex h-14 w-full cursor-pointer appearance-none flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-center transition;
+            font: inherit;
+        }
+
+        .minor-event-date:hover {
+            @apply border-blue-300 bg-blue-50;
+        }
+
+        .minor-event-date:focus-visible {
+            @apply outline-none ring-4 ring-blue-900/20;
+        }
+
+        .minor-event-date-month {
+            @apply text-[0.65rem] font-black uppercase tracking-wider text-[#014d93];
+        }
+
+        .minor-event-date-day {
+            @apply text-xl font-black leading-none text-gray-800;
+            font-family: 'Lora', serif;
+        }
+
+        .minor-event-body {
+            @apply min-w-0;
+        }
+
+        .minor-event-heading {
+            @apply flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:justify-between;
+        }
+
+        .minor-event-title {
+            @apply min-w-0 text-base font-bold leading-tight text-gray-800;
+        }
+
+        .minor-event-meta {
+            @apply mt-1 text-xs font-semibold text-gray-500;
+        }
+
+        .minor-event-location {
+            @apply mt-1 flex items-center gap-1.5 text-xs text-gray-500;
+        }
+
+        .minor-event-location i {
+            @apply text-yellow-500;
+        }
+
+        /* Day details modal */
+
+        .calendar-day-modal-backdrop {
+            @apply fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/60 p-4 sm:items-center;
+        }
+
+        .calendar-day-modal {
+            @apply my-auto flex max-h-[calc(100vh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl;
+        }
+
+        .calendar-day-modal-header {
+            @apply flex shrink-0 items-start justify-between gap-4 border-b border-gray-200 bg-slate-50 px-5 py-4 md:px-6;
+        }
+
+        .calendar-day-modal-kicker {
+            @apply text-xs font-black uppercase tracking-widest text-blue-700;
+        }
+
+        .calendar-day-modal-title {
+            @apply mt-1 text-2xl font-bold text-[#014d93] md:text-3xl;
+            font-family: 'Lora', serif;
+        }
+
+        .calendar-day-modal-close {
+            @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-xl text-gray-600 transition;
+        }
+
+        .calendar-day-modal-close:hover {
+            @apply border-blue-300 bg-blue-50 text-[#014d93];
+        }
+
+        .calendar-day-modal-close:focus-visible {
+            @apply outline-none ring-4 ring-blue-900/20;
+        }
+
+        .calendar-day-modal-list {
+            @apply space-y-4 overflow-y-auto p-5 md:p-6;
+        }
+
+        .calendar-day-modal-event {
+            @apply rounded-xl border border-gray-200 bg-white p-5 shadow-sm;
+        }
+
+        .calendar-day-modal-event-heading {
+            @apply flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between;
+        }
+
+        .calendar-day-modal-event-heading h3 {
+            @apply text-xl font-bold text-[#014d93] md:text-2xl;
+        }
+
+        .calendar-day-modal-date {
+            @apply mt-2 text-base font-bold text-gray-600;
+        }
+
+        .calendar-day-modal-summary {
+            @apply mt-4 text-lg leading-relaxed text-gray-700;
+        }
+
+        .calendar-day-modal-location {
+            @apply mt-4 flex items-start gap-3 rounded-xl bg-gray-50 p-4 text-base leading-relaxed text-gray-600;
+        }
+
+        .calendar-day-modal-location > i {
+            @apply mt-1 text-yellow-500;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 640px) {
             .calendar-month-nav {
-                @apply grid items-center gap-3;
-                grid-template-columns: minmax(0, 1fr) minmax(12rem, 3fr) minmax(0, 1fr);
-            }
-
-            .calendar-month-button {
-                @apply inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2 text-sm font-extrabold text-blue-900 shadow-sm transition;
-            }
-
-            .calendar-month-button:hover:not(:disabled) {
-                @apply bg-blue-50 border-blue-300;
-            }
-
-            .calendar-month-button:disabled {
-                @apply cursor-not-allowed opacity-40;
+                @apply grid gap-2;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .calendar-month-center {
-                @apply flex flex-row flex-nowrap items-center justify-center gap-3 min-w-0;
+                @apply order-first col-span-2 flex w-full flex-nowrap items-center justify-center gap-2;
             }
 
             .calendar-month-label {
-                @apply whitespace-nowrap text-[#014d93] font-extrabold leading-none;
-                font-family: 'Lora', serif;
-                font-size: clamp(1.45rem, 4vw, 2.15rem);
+                @apply text-center;
+                font-size: clamp(1.2rem, 7vw, 1.75rem);
             }
 
             .calendar-year-select-inline {
-                @apply min-h-11 rounded-xl border-2 border-blue-200 bg-white px-3 pr-8 py-1 text-[#014d93] font-black leading-none;
-                font-size: clamp(1.15rem, 3vw, 1.55rem);
+                @apply min-h-10 px-2.5 py-1 pr-7;
+                font-size: clamp(1rem, 5vw, 1.25rem);
             }
 
-            .calendar-year-select-inline:focus {
-                @apply border-navy outline-none ring-4 ring-blue-900/20;
+            .calendar-today-button {
+                @apply h-10 w-10 text-base;
             }
 
-            .calendar-scroll-viewport {
-                @apply overflow-visible;
+            .calendar-month-button {
+                @apply w-full min-w-0 px-2 py-2 text-xs;
             }
 
-            .calendar-scroll-track {
-                @apply block;
-            }
-
-            .calendar-month-grid {
-                @apply grid grid-cols-7 bg-gray-200 gap-px;
+            .calendar-month-button span {
+                @apply truncate;
             }
 
             .calendar-day-heading {
-                @apply bg-gray-100 px-2 py-3 text-center text-xs font-black uppercase tracking-wider text-gray-500;
+                @apply px-1 py-2 text-[0.65rem];
             }
 
             .calendar-day {
-                @apply min-h-24 bg-white p-2 text-sm transition;
-            }
-
-            .calendar-day-empty {
-                @apply bg-gray-50;
-            }
-
-            .calendar-day-number {
-                @apply mb-1 text-xs font-black text-gray-500;
-            }
-
-            .calendar-day-has-events {
-                @apply bg-white;
-            }
-
-            .calendar-day-has-public-events {
-                @apply cursor-pointer;
-            }
-
-            .calendar-day-has-public-events:hover {
-                @apply bg-yellow-50;
-            }
-
-            .calendar-day-selected {
-                @apply ring-4 ring-inset ring-blue-900;
+                @apply min-h-20 p-1.5;
             }
 
             .calendar-chip {
-                @apply mb-1 flex w-full items-center gap-1 rounded-lg border border-solid px-2 py-1 text-left text-xs font-bold leading-tight;
-            }
-
-            .calendar-chip-muted {
-                @apply cursor-default opacity-60;
+                @apply px-1.5 py-1 text-[0.65rem];
             }
 
             .calendar-category-badge {
-                @apply inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-xs font-black uppercase tracking-wide;
+                @apply gap-1.5 px-2.5 py-1 text-[0.65rem];
             }
 
-            .calendar-event-list {
-                @apply space-y-4;
+            .calendar-featured-months {
+                @apply grid-cols-1;
             }
 
-            .calendar-list-summary {
-                @apply mb-4 text-sm md:text-base font-semibold text-gray-600;
-            }
-
-            .calendar-clear-filter {
-                @apply mt-2 inline-flex rounded-full border border-blue-200 bg-white px-3 py-1.5 text-sm font-black text-[#014d93] transition sm:ml-3 sm:mt-0;
-            }
-
-            .calendar-clear-filter:hover {
-                @apply bg-navy text-white;
-            }
-
-            .event-card {
-                @apply rounded-xl border border-gray-200 bg-white p-4 shadow-sm;
+            .calendar-event-month-list {
+                @apply p-3;
             }
 
             .event-card-with-date {
-                @apply grid items-start gap-4 md:grid-cols-[7rem_minmax(0,1fr)];
-            }
-
-            .event-card-body {
-                @apply min-w-0;
-            }
-
-            .event-card-past {
-                @apply opacity-80;
+                @apply grid-cols-1 gap-0 p-0;
+                grid-template-columns: minmax(0, 1fr);
             }
 
             .event-date-rail {
-                @apply flex h-fit flex-col items-center justify-center self-start rounded-2xl border border-gray-200 bg-slate-50 px-3 py-4 text-center text-gray-800;
+                @apply grid min-h-0 grid-cols-[auto_auto_minmax(0,1fr)] items-center justify-start rounded-none border-0 border-b border-gray-200 px-4 py-3 text-left;
             }
 
             .event-date-rail-month {
-                @apply text-xs font-black uppercase tracking-widest text-[#014d93];
+                @apply col-start-1 row-start-1;
             }
 
             .event-date-rail-day {
-                @apply mt-1 text-4xl font-black leading-none text-gray-900;
-                font-family: 'Lora', serif;
+                @apply col-start-1 row-start-2 mt-0 text-3xl;
             }
 
             .event-date-rail-weekday {
-                @apply mt-1 text-xs font-black uppercase text-gray-500;
+                @apply col-start-2 row-start-2 mb-1 ml-2 mt-0 self-end;
             }
 
             .event-date-rail-time {
-                @apply mt-3 w-full border-t border-gray-200 pt-3 text-xs font-black leading-snug text-gray-700;
+                @apply col-start-3 row-span-2 row-start-1 ml-4 mt-0 w-auto border-l border-t-0 pl-4 pt-0 text-right;
             }
 
-            .event-card-past .event-date-rail {
-                @apply bg-gray-100 text-gray-500;
-            }
-
-            .event-card-top {
-                @apply flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between;
-            }
-
-            .event-title {
-                @apply text-xl md:text-2xl font-bold text-[#014d93];
+            .event-card-body {
+                @apply p-4;
             }
 
             .event-date-line {
-                @apply mt-1 text-sm font-semibold text-gray-500;
-            }
-
-            .event-past-notice {
-                @apply mt-4 rounded-lg border-l-4 border-gray-400 bg-gray-100 px-4 py-3 text-sm font-bold text-gray-600;
-            }
-
-            .event-summary {
-                @apply mt-4 text-base leading-relaxed text-gray-600;
-            }
-
-            .event-details-grid {
-                @apply mt-5 grid gap-4;
-            }
-
-            .event-location {
-                @apply flex items-start gap-3 rounded-xl bg-gray-50 p-4 text-sm text-gray-600;
-            }
-
-            .event-location i {
-                @apply mt-1 text-yellow-500;
+                @apply hidden;
             }
 
             .event-links {
-                @apply flex flex-col gap-2 sm:flex-row sm:flex-wrap;
+                @apply grid grid-cols-1;
             }
 
             .event-link-button {
-                @apply inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2 text-sm font-black text-[#014d93] shadow-sm transition;
+                @apply w-full;
             }
 
-            .event-link-button:hover {
-                @apply bg-navy text-white;
+            .minor-event-card {
+                @apply gap-2 p-2.5;
+                grid-template-columns: 3.25rem minmax(0, 1fr);
             }
 
-            .calendar-day-today {
-                @apply bg-blue-50 ring-2 ring-inset ring-blue-200;
+            .minor-event-date {
+                @apply h-12;
             }
 
-            .calendar-day-today .calendar-day-number {
-                @apply inline-flex h-7 w-7 items-center justify-center rounded-full font-black text-blue-950;
+            .calendar-category-badge-minor {
+                @apply self-start;
             }
 
-            .calendar-day-selected.calendar-day-today {
-                @apply ring-4 ring-inset ring-blue-900;
-            }
-        }
-
-        @layer utilities {
-            .text-navy {
-                color: var(--navy);
+            .calendar-day-modal-backdrop {
+                @apply p-2;
             }
 
-            .bg-navy {
-                background-color: var(--navy);
+            .calendar-day-modal {
+                @apply max-h-[calc(100vh-1rem)] rounded-xl;
             }
 
-            .border-navy {
-                border-color: var(--navy);
+            .calendar-day-modal-header {
+                @apply px-4 py-3;
             }
 
-            .hover-bg-navy:hover {
-                background-color: var(--navy-dark);
+            .calendar-day-modal-title {
+                @apply text-xl;
             }
 
-            .text-gold {
-                color: var(--gold);
+            .calendar-day-modal-list {
+                @apply p-3;
             }
 
-            .bg-gold {
-                background-color: var(--gold);
+            .calendar-day-modal-event {
+                @apply p-4;
             }
 
-            .border-gold {
-                border-color: var(--gold);
-            }
-
-            @media (max-width: 640px) {
-                .calendar-month-nav {
-                    @apply grid gap-2;
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
-                }
-
-                .calendar-month-center {
-                    @apply order-first col-span-2 flex w-full flex-wrap items-center justify-center gap-2;
-                }
-
-                .calendar-month-label {
-                    @apply text-center;
-                    font-size: clamp(1.35rem, 8vw, 1.85rem);
-                }
-
-                .calendar-year-select-inline {
-                    @apply min-h-10 px-2.5 pr-7 py-1;
-                    font-size: clamp(1rem, 6vw, 1.35rem);
-                }
-
-                .calendar-month-button {
-                    @apply w-full min-w-0 px-2 py-2 text-xs;
-                }
-
-                .calendar-month-button span {
-                    @apply truncate;
-                }
-
-                .calendar-day {
-                    @apply min-h-20 p-1.5;
-                }
-
-                .calendar-chip {
-                    @apply px-1.5 py-1 text-[0.65rem];
-                }
-
-                .event-card-with-date {
-                    @apply grid-cols-1;
-                }
-
-                .event-date-rail {
-                    @apply grid min-h-0 grid-cols-[auto_auto_1fr] items-center justify-start px-4 py-3 text-left;
-                }
-
-                .event-date-rail-month {
-                    @apply col-start-1 row-start-1;
-                }
-
-                .event-date-rail-day {
-                    @apply col-start-1 row-start-2 mt-0 text-3xl;
-                }
-
-                .event-date-rail-weekday {
-                    @apply col-start-2 row-start-2 mb-1 ml-2 self-end;
-                }
-
-                .event-date-rail-time {
-                    @apply col-start-3 row-span-2 row-start-1 ml-4 mt-0 w-auto border-l border-t-0 border-gray-200 pl-4 pt-0;
-                }
+            .calendar-day-modal-summary {
+                @apply text-base;
             }
         }
-    </style>
+    }
+
+    @layer utilities {
+        .text-navy {
+            color: var(--navy);
+        }
+
+        .bg-navy {
+            background-color: var(--navy);
+        }
+
+        .border-navy {
+            border-color: var(--navy);
+        }
+
+        .hover-bg-navy:hover {
+            background-color: var(--navy-dark);
+        }
+
+        .text-gold {
+            color: var(--gold);
+        }
+
+        .bg-gold {
+            background-color: var(--gold);
+        }
+
+        .border-gold {
+            border-color: var(--gold);
+        }
+    }
+</style>
 </head>
 <body class="site-body" id="top">
 	<a href="#main" class="skip-link">Skip to main content</a>
@@ -454,11 +771,18 @@
 				<p class="hero-copy">Club meetings, fundraisers, service projects, and community events around Fallbrook.</p>
 			</section>
 
-            <div id="calendar-grid" class="calendar-grid-wrap"></div>
+            <div id="calendar-grid" class="calendar-grid-wrap calendar-grid-loading">
+                <div class="calendar-loading-panel">
+                    <div class="calendar-loading-spinner" aria-hidden="true"></div>
+                    <p>Loading calendar...</p>
+                </div>
+            </div>
 
-            <section class="section-card-compact">
-                <div class="divider calendar-details-divider"><span class="divider-label">Upcoming Events</span></div>
-                <p id="calendar-list-summary" class="calendar-list-summary"></p>
+            <section class="section-card-compact" aria-label="Upcoming calendar events">
+                <div class="divider calendar-details-divider my-4">
+                    <span class="divider-label">Upcoming Events</span>
+                </div>
+
                 <div id="calendar-list" class="calendar-event-list"></div>
             </section>
 		</div>

@@ -22,7 +22,19 @@ const calendarEventCategories = [
 		label: 'Community Event',
 		icon: 'fa-people-group',
 		badgeClass: 'bg-purple-100 text-purple-900 border-purple-200'
-	}
+	},
+	{
+		id: 'holiday',
+		label: 'Holiday',
+		icon: 'fa-flag-usa',
+		badgeClass: 'bg-slate-100 text-slate-700 border-slate-200'
+	},
+	{
+		id: 'club',
+		label: 'Club Event',
+		icon: 'fa-users',
+		badgeClass: 'bg-indigo-100 text-indigo-900 border-indigo-200'
+	},
 ];
 
 const calendarRecurringDatesByYear = {
@@ -46,7 +58,7 @@ const calendarRecurringDatesByYear = {
 			'2026-04-14', '2026-04-28',
 			'2026-05-12', '2026-05-26',
 			'2026-06-09', '2026-06-23',
-			'2026-07-14', '2026-07-28',
+						, '2026-07-28',
 			'2026-08-11', '2026-08-25',
 			'2026-09-08', '2026-09-22',
 			'2026-10-13', '2026-10-27',
@@ -123,7 +135,7 @@ const calendarSingleEvents = [
 	{
 		id: 'installation-dinner-2026',
 		title: '2026 Installation Dinner',
-		category: 'community',
+		category: 'club',
 		start: '2026-07-14T18:00:00',
 		end: null,
 		timezone: 'America/Los_Angeles',
@@ -155,3 +167,92 @@ const calendarSingleEvents = [
 		]
 	}
 ];
+
+const federalHolidayDefinitions = {
+	newYearsDay: {
+		title: 'New Year\u2019s Day',
+		slug: 'new-years-day'
+	},
+	martinLutherKingJrDay: {
+		title: 'Birthday of Martin Luther King, Jr.',
+		slug: 'martin-luther-king-jr-day'
+	},
+	washingtonsBirthday: {
+		title: 'Washington\u2019s Birthday',
+		slug: 'washingtons-birthday'
+	},
+	memorialDay: {
+		title: 'Memorial Day',
+		slug: 'memorial-day'
+	},
+	juneteenth: {
+		title: 'Juneteenth National Independence Day',
+		slug: 'juneteenth'
+	},
+	independenceDay: {
+		title: 'Independence Day',
+		slug: 'independence-day'
+	},
+	laborDay: {
+		title: 'Labor Day',
+		slug: 'labor-day'
+	},
+	columbusDay: {
+		title: 'Columbus Day',
+		slug: 'columbus-day'
+	},
+	veteransDay: {
+		title: 'Veterans Day',
+		slug: 'veterans-day'
+	},
+	thanksgivingDay: {
+		title: 'Thanksgiving Day',
+		slug: 'thanksgiving-day'
+	},
+	christmasDay: {
+		title: 'Christmas Day',
+		slug: 'christmas-day'
+	}
+};
+
+const federalHolidayDatesByYear = {
+	2026: {
+		newYearsDay: '2026-01-01',
+		martinLutherKingJrDay: '2026-01-19',
+		washingtonsBirthday: '2026-02-16',
+		memorialDay: '2026-05-25',
+		juneteenth: '2026-06-19',
+		independenceDay: '2026-07-03',
+		laborDay: '2026-09-07',
+		columbusDay: '2026-10-12',
+		veteransDay: '2026-11-11',
+		thanksgivingDay: '2026-11-26',
+		christmasDay: '2026-12-25'
+	},
+	2027: {
+		newYearsDay: '2027-01-01',
+		martinLutherKingJrDay: '2027-01-18',
+		washingtonsBirthday: '2027-02-15',
+		memorialDay: '2027-05-31',
+		juneteenth: '2027-06-18',
+		independenceDay: '2027-07-05',
+		laborDay: '2027-09-06',
+		columbusDay: '2027-10-11',
+		veteransDay: '2027-11-11',
+		thanksgivingDay: '2027-11-25',
+		christmasDay: '2027-12-24'
+	},
+	2028: {
+		newYearsDay: '2027-12-31',
+		martinLutherKingJrDay: '2028-01-17',
+		washingtonsBirthday: '2028-02-21',
+		memorialDay: '2028-05-29',
+		juneteenth: '2028-06-19',
+		independenceDay: '2028-07-04',
+		laborDay: '2028-09-04',
+		columbusDay: '2028-10-09',
+		veteransDay: '2028-11-10',
+		thanksgivingDay: '2028-11-23',
+		christmasDay: '2028-12-25'
+	}
+};

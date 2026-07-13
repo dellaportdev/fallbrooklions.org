@@ -40,7 +40,7 @@
 				"01-13", "01-27", "02-10", "02-24",
 				"03-10", "03-24", "04-14", "04-28",
 				"05-12", "05-26", "06-09", "06-23",
-				"07-14", "07-28", "08-11", "08-25",
+					   , "07-28", "08-11", "08-25",
 				"09-08", "09-22", "10-13", "10-27",
 				"11-10", "11-24"
 			],
@@ -53,30 +53,3 @@
 				"11-09", "11-23"
 			]			
 		};
-
-		const announcements = [
-		{
-			title: "Rummage Sale Fundraiser",
-			content: `
-			<p>The Fallbrook Ranch Lions Club is hosting a <strong>Rummage Sale</strong>; All proceeds support the club's <strong>Sight Campaign</strong>, which provides eye exams and glasses for students in need at local elementary schools.</p>
-			<p><strong>Items for Sale:</strong></p>
-			<p>Clothes, Plants, Furniture, Housewares, Small Appliances, Misc. Items</p>
-			`,
-			date_end: "2026-02-21",
-			date: "Saturday, February 21",
-			time: "10:00&nbsp;AM – 3:00&nbsp;PM",
-			location: "Community Health & Wellness Center, 1636 E. Mission Rd., Fallbrook",
-			links: [
-			{
-				href: "./files/Rummage Sale 8.5x11 color.pdf",
-				label: "Download Flyer",
-				icon: "fa-file-arrow-down"
-			},
-			{
-				href: "https://maps.app.goo.gl/kfxLbUSMyRGHMvMB9",
-				label: "Google Maps",
-				icon: "fa-map-location-dot"
-			}
-			]
-		}
-		];
