@@ -119,5 +119,39 @@ const calendarSingleEvents = [
 				href: 'https://maps.app.goo.gl/kfxLbUSMyRGHMvMB9'
 			}
 		]
+	},
+	{
+		id: 'installation-dinner-2026',
+		title: '2026 Installation Dinner',
+		category: 'community',
+		start: '2026-07-14T18:00:00',
+		end: null,
+		timezone: 'America/Los_Angeles',
+		summary: 'Installation dinner at Backdraft Bar & Grill in Bonsall.',
+		locationName: 'Backdraft Bar & Grill',
+		locationAddress: '5525 Mission Rd., Ste. F, Bonsall, CA',
+		links: [
+			{
+				label: 'Directions',
+				href: 'https://maps.app.goo.gl/69RFt2HS1FLPfSHY6'
+			}
+		]
+	},
+	{
+		id: 'rummage-sale-fundraiser-2026-10-17',
+		title: 'Rummage Sale Fundraiser',
+		category: 'fundraiser',
+		start: '2026-10-17T09:30:00',
+		end: '2026-10-17T15:30:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Rummage sale fundraiser at the Community Health & Wellness Center.',
+		locationName: 'Community Health & Wellness Center',
+		locationAddress: '1636 E. Mission Rd., Fallbrook, CA 92028',
+		links: [
+			{
+				label: 'Directions',
+				href: 'https://maps.app.goo.gl/qfp5p3bAynE7cohk7'
+			}
+		]
 	}
 ];
