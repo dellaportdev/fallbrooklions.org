@@ -141,22 +141,22 @@
         }
 
         .calendar-month-label {
-            @apply whitespace-nowrap font-extrabold leading-none text-[#014d93];
+            @apply whitespace-nowrap font-extrabold leading-none text-navy;
             font-family: 'Lora', serif;
             font-size: clamp(1.45rem, 4vw, 2.15rem);
         }
 
         .calendar-year-select-inline {
-            @apply min-h-11 rounded-xl border-2 border-blue-200 bg-white px-3 py-1 pr-8 font-black leading-none text-[#014d93];
+            @apply min-h-11 rounded-xl border-2 border-blue-200 bg-white px-3 py-1 pr-8 font-black leading-none text-navy;
             font-size: clamp(1.15rem, 3vw, 1.55rem);
         }
 
         .calendar-year-select-inline:focus {
-            @apply border-[#014d93] outline-none ring-4 ring-blue-900/20;
+            @apply border-navy outline-none ring-4 ring-blue-900/20;
         }
 
         .calendar-today-button {
-            @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-blue-200 bg-white text-lg text-[#014d93] shadow-sm transition;
+            @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-blue-200 bg-white text-lg text-navy shadow-sm transition;
         }
 
         .calendar-today-button:hover:not(:disabled) {
@@ -164,7 +164,7 @@
         }
 
         .calendar-today-button:focus-visible {
-            @apply border-[#014d93] outline-none ring-4 ring-blue-900/20;
+            @apply border-navy outline-none ring-4 ring-blue-900/20;
         }
 
         .calendar-today-button:disabled {
@@ -268,7 +268,7 @@
         }
 
         .calendar-event-month-title {
-            @apply mt-1 text-2xl font-bold text-[#014d93];
+            @apply mt-1 text-2xl font-bold text-navy;
             font-family: 'Lora', serif;
         }
 
@@ -295,7 +295,7 @@
         }
 
         .calendar-continuing-title {
-            @apply mt-1 text-2xl font-bold text-[#014d93];
+            @apply mt-1 text-2xl font-bold text-navy;
             font-family: 'Lora', serif;
         }
 
@@ -320,7 +320,52 @@
 
         .event-card-with-date {
             @apply grid items-start gap-4;
-            grid-template-columns: 5.5rem minmax(0, 1fr);
+            grid-template-columns: 6.75rem minmax(0, 1fr);
+        }
+
+        .event-date-column {
+            @apply flex min-w-0 flex-col gap-2;
+        }
+
+        .calendar-category-badge-major {
+            @apply w-full justify-center whitespace-normal px-2 text-center text-[0.65rem] leading-tight;
+        }
+
+        .event-date-rail-time {
+            @apply mt-2 w-full border-t border-gray-200 pt-2 text-sm font-black leading-snug text-gray-700;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+
+        .event-date-single {
+            @apply flex w-full flex-col items-center;
+        }
+
+        .event-date-range {
+            @apply flex w-full flex-col items-center gap-1;
+        }
+
+        .event-date-range-part {
+            @apply flex w-full flex-col items-center;
+        }
+
+        .event-date-range-separator {
+            @apply my-1 text-[0.6rem] font-black uppercase tracking-widest text-gray-400;
+        }
+
+        .event-date-range .event-date-rail-day {
+            @apply text-2xl;
+        }
+
+        .event-date-rail-time {
+            @apply mt-2 w-full border-t border-gray-200 pt-2 text-[0.7rem] font-black leading-snug text-gray-700;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+
+
+        .event-started-badge {
+            @apply mt-2 inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-gray-800;
         }
 
         .major-event-card {
@@ -349,7 +394,7 @@
         }
 
         .event-date-rail-month {
-            @apply text-xs font-black uppercase tracking-widest text-[#014d93];
+            @apply text-xs font-black uppercase tracking-widest text-navy;
         }
 
         .event-date-rail-day {
@@ -374,7 +419,7 @@
         }
 
         .event-title {
-            @apply text-lg font-bold text-[#014d93] md:text-xl;
+            @apply text-lg font-bold text-navy md:text-xl;
         }
 
         .event-date-line {
@@ -410,11 +455,11 @@
         }
 
         .event-link-button {
-            @apply inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm font-black text-[#014d93] shadow-sm transition;
+            @apply inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm font-black text-navy shadow-sm transition;
         }
 
         .event-link-button:hover {
-            @apply bg-[#014d93] text-white;
+            @apply bg-navy text-white;
         }
 
         .event-link-button:focus-visible {
@@ -446,7 +491,7 @@
         }
 
         .minor-event-date-month {
-            @apply text-[0.65rem] font-black uppercase tracking-wider text-[#014d93];
+            @apply text-[0.65rem] font-black uppercase tracking-wider text-navy;
         }
 
         .minor-event-date-day {
@@ -497,7 +542,7 @@
         }
 
         .calendar-day-modal-title {
-            @apply mt-1 text-2xl font-bold text-[#014d93] md:text-3xl;
+            @apply mt-1 text-2xl font-bold text-navy md:text-3xl;
             font-family: 'Lora', serif;
         }
 
@@ -506,7 +551,7 @@
         }
 
         .calendar-day-modal-close:hover {
-            @apply border-blue-300 bg-blue-50 text-[#014d93];
+            @apply border-blue-300 bg-blue-50 text-navy;
         }
 
         .calendar-day-modal-close:focus-visible {
@@ -526,7 +571,7 @@
         }
 
         .calendar-day-modal-event-heading h3 {
-            @apply text-xl font-bold text-[#014d93] md:text-2xl;
+            @apply text-xl font-bold text-navy md:text-2xl;
         }
 
         .calendar-day-modal-date {
@@ -608,24 +653,52 @@
                 grid-template-columns: minmax(0, 1fr);
             }
 
-            .event-date-rail {
-                @apply grid min-h-0 grid-cols-[auto_auto_minmax(0,1fr)] items-center justify-start rounded-none border-0 border-b border-gray-200 px-4 py-3 text-left;
+            .event-date-column {
+                @apply gap-2;
             }
 
-            .event-date-rail-month {
+            .calendar-category-badge-major {
+                @apply mx-4 mb-3 w-fit self-start;
+            }
+
+            .event-date-rail {
+                @apply flex min-h-0 flex-col items-stretch justify-center rounded-none border-0 border-b border-gray-200 px-4 py-3 text-left;
+            }
+
+            .event-date-single {
+                @apply grid grid-cols-[auto_auto] items-end justify-start gap-x-2;
+            }
+
+            .event-date-single .event-date-rail-month {
                 @apply col-start-1 row-start-1;
             }
 
-            .event-date-rail-day {
+            .event-date-single .event-date-rail-day {
                 @apply col-start-1 row-start-2 mt-0 text-3xl;
             }
 
-            .event-date-rail-weekday {
-                @apply col-start-2 row-start-2 mb-1 ml-2 mt-0 self-end;
+            .event-date-single .event-date-rail-weekday {
+                @apply col-start-2 row-start-2 mb-1 mt-0 self-end;
+            }
+
+            .event-date-range {
+                @apply grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3;
+            }
+
+            .event-date-range-part {
+                @apply items-center text-center;
+            }
+
+            .event-date-range-separator {
+                @apply m-0 self-center;
+            }
+
+            .event-date-range .event-date-rail-day {
+                @apply mt-0 text-3xl;
             }
 
             .event-date-rail-time {
-                @apply col-start-3 row-span-2 row-start-1 ml-4 mt-0 w-auto border-l border-t-0 pl-4 pt-0 text-right;
+                @apply mt-3 w-full border-l-0 border-t border-gray-200 pl-0 pt-3 text-center;
             }
 
             .event-card-body {

@@ -27,7 +27,7 @@ const calendarEventCategories = [
 		id: 'club',
 		label: 'Club Event',
 		icon: 'fa-users',
-		badgeClass: 'bg-indigo-100 text-indigo-900 border-indigo-200'
+		badgeClass: 'bg-[var(--navy)] text-[#facc15] border-[#facc15]'
 	},
 	{
 		id: 'federal-holiday',
@@ -341,6 +341,23 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://business.fallbrookchamberofcommerce.org/eventcalendar/Details/save-the-date-village-artisan-faire-2026-1618785?sourceTypeId=Website'
+			}
+		]
+	},
+	{
+		id: 'fallbrook-annual-golf-tournament-2026',
+		title: 'Annual Golf Tournament 2026',
+		category: 'local',
+		start: '2026-09-28T09:00:00',
+		end: '2026-09-28T16:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Annual Fallbrook Chamber of Commerce golf tournament at The Havens Country Club.',
+		locationName: 'The Havens Country Club',
+		locationAddress: '29354 Vista Valley Dr., Vista, CA 92084',
+		links: [
+			{
+				label: 'Learn More',
+				href: 'https://business.fallbrookchamberofcommerce.org/eventcalendar/Details/save-the-date-annual-golf-tournament-2026-1618782?sourceTypeId=Website'
 			}
 		]
 	}

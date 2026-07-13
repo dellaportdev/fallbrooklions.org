@@ -42,49 +42,109 @@
     };
 
     // Builds the large event treatment used for major public events.
-    const getMajorEventTemplate = () => `
+    const getMajorEventTemplate = majorCondition => `
         <article
-            v-if="isMajorEvent(event)"
+            v-if="${majorCondition}"
             :id="'event-' + event.id"
             :class="getMajorEventClass(event)"
         >
-            <button
-                type="button"
-                class="event-date-rail"
-                :aria-label="'Show ' + formatMonthYearForEvent(event) + ' on the calendar'"
-                @click="goToEventMonth(event)"
-            >
-                <div class="event-date-rail-month">
-                    {{ formatEventDateParts(event).month }}
-                </div>
-
-                <div class="event-date-rail-day">
-                    {{ formatEventDateParts(event).day }}
-                </div>
-
-                <div class="event-date-rail-weekday">
-                    {{ formatEventDateParts(event).weekday }}
-                </div>
-
-                <div
-                    v-if="formatEventDateParts(event).time"
-                    class="event-date-rail-time"
+            <div class="event-date-column">
+                <button
+                    type="button"
+                    class="event-date-rail"
+                    :aria-label="'Show ' + formatMonthYearForEvent(event) + ' on the calendar'"
+                    @click="goToEventMonth(event)"
                 >
-                    {{ formatEventDateParts(event).time }}
-                </div>
-            </button>
+                    <div
+                        v-if="!formatEventDateParts(event).isRange"
+                        class="event-date-single"
+                    >
+                        <div class="event-date-rail-month">
+                            {{ formatEventDateParts(event).start.month }}
+                        </div>
+
+                        <div class="event-date-rail-day">
+                            {{ formatEventDateParts(event).start.day }}
+                        </div>
+
+                        <div class="event-date-rail-weekday">
+                            {{ formatEventDateParts(event).start.weekday }}
+                        </div>
+                    </div>
+
+                    <div
+                        v-else
+                        class="event-date-range"
+                    >
+                        <div class="event-date-range-part">
+                            <div class="event-date-rail-month">
+                                {{ formatEventDateParts(event).start.month }}
+                            </div>
+
+                            <div class="event-date-rail-day">
+                                {{ formatEventDateParts(event).start.day }}
+                            </div>
+
+                            <div class="event-date-rail-weekday">
+                                {{ formatEventDateParts(event).start.weekday }}
+                            </div>
+                        </div>
+
+                        <div
+                            class="event-date-range-separator"
+                            aria-hidden="true"
+                        >
+                            to
+                        </div>
+
+                        <div class="event-date-range-part">
+                            <div class="event-date-rail-month">
+                                {{ formatEventDateParts(event).end.month }}
+                            </div>
+
+                            <div class="event-date-rail-day">
+                                {{ formatEventDateParts(event).end.day }}
+                            </div>
+
+                            <div class="event-date-rail-weekday">
+                                {{ formatEventDateParts(event).end.weekday }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        v-if="formatEventDateParts(event).time"
+                        class="event-date-rail-time"
+                    >
+                        {{ formatEventDateParts(event).time }}
+                    </div>
+                </button>
+
+                <span
+                    :class="'calendar-category-badge calendar-category-badge-major ' + getCategory(event.category).badgeClass"
+                >
+                    <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
+                    {{ getCategory(event.category).label }}
+                </span>
+            </div>
 
             <div class="event-card-body">
                 <div class="event-card-top">
                     <div>
                         <h3 class="event-title">{{ event.title }}</h3>
-                        <p class="event-date-line">{{ formatEventDate(event) }}</p>
-                    </div>
 
-                    <span :class="'calendar-category-badge ' + getCategory(event.category).badgeClass">
-                        <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
-                        {{ getCategory(event.category).label }}
-                    </span>
+                        <p class="event-date-line">
+                            {{ formatEventDate(event) }}
+                        </p>
+
+                        <span
+                            v-if="isEventInProgress(event)"
+                            class="event-started-badge"
+                        >
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            {{ getEventTimeRemainingLabel(event) }}
+                        </span>
+                    </div>
                 </div>
 
                 <p
@@ -162,11 +222,11 @@
                 @click="goToEventMonth(event)"
             >
                 <span class="minor-event-date-month">
-                    {{ formatEventDateParts(event).month }}
+                    {{ formatEventDateParts(event).start.month }}
                 </span>
 
                 <span class="minor-event-date-day">
-                    {{ formatEventDateParts(event).day }}
+                    {{ formatEventDateParts(event).start.day }}
                 </span>
             </button>
 
@@ -195,16 +255,25 @@
         </article>
     `;
 
-    // Builds a chronological mixed list using a real DOM parent for Petite Vue.
-    const getEventItemsTemplate = eventsExpression => `
-    <div
-        v-for="event in ${eventsExpression}"
-        class="calendar-event-entry"
-    >
-        ${getMajorEventTemplate()}
-        ${getMinorEventTemplate()}
-    </div>
-`;
+    // Builds a chronological mixed list of major and minor events.
+    const getEventItemsTemplate = (
+        eventsExpression,
+        demotePastEvents = false
+    ) => {
+        const majorCondition = demotePastEvents
+            ? 'isMajorEvent(event) && !isPastEvent(event)'
+            : 'isMajorEvent(event)';
+
+        return `
+        <div
+            v-for="event in ${eventsExpression}"
+            class="calendar-event-entry"
+        >
+            ${getMajorEventTemplate(majorCondition)}
+            ${getMinorEventTemplate()}
+        </div>
+    `;
+    };
 
     const getCalendarTemplate = () => `
         <div
@@ -335,7 +404,7 @@
                         v-if="thisMonthEvents.length"
                         class="calendar-event-month-list"
                     >
-                        ${getEventItemsTemplate('thisMonthEvents')}
+                        ${getEventItemsTemplate('thisMonthEvents', true)}
                     </div>
 
                     <p
@@ -853,6 +922,53 @@
             isMajorEvent(event) {
                 return isPublicEvent(event);
             },
+
+            // Checks whether an event has begun but has not yet ended.
+            isEventInProgress(event) {
+                const start = parseLocalDateTime(event.start);
+                const end = parseLocalDateTime(event.end);
+                const now = new Date();
+
+                if (!start || now < start) return false;
+
+                if (end) {
+                    return now <= end;
+                }
+
+                return getEventDateKey(event) === this.todayDateKey;
+            },        
+            
+            // Formats the remaining calendar days for an event already in progress.
+            getEventTimeRemainingLabel(event) {
+                const end = parseLocalDateTime(event.end);
+
+                if (!end) {
+                    return 'This event is happening now!';
+                }
+
+                const today = parseLocalDateTime(
+                    `${this.todayDateKey}T00:00:00`
+                );
+                const endDate = new Date(
+                    end.getFullYear(),
+                    end.getMonth(),
+                    end.getDate()
+                );
+                const millisecondsPerDay = 24 * 60 * 60 * 1000;
+                const daysLeft = Math.ceil(
+                    (endDate - today) / millisecondsPerDay
+                );
+
+                if (daysLeft <= 0) {
+                    return 'Last day of this event';
+                }
+
+                if (daysLeft === 1) {
+                    return '1 day left on this event';
+                }
+
+                return `${daysLeft} days left on this event`;
+            },            
 
             // Builds the class list for an event chip.
             getChipClass(event) {

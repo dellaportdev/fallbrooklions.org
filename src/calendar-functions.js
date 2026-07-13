@@ -81,10 +81,15 @@ const formatDateKey = dateKey => {
 // Checks whether a stored date value includes a time component.
 const hasTimeComponent = value => typeof value === 'string' && value.includes('T');
 
-// Formats a time without displaying unnecessary :00 minutes.
-const formatTime = date => date
-    ? date.toLocaleTimeString('en-US', timeOptions).replace(':00', '')
-    : '';
+// Formats a time while keeping AM or PM attached to the numeric time.
+const formatTime = date => {
+    if (!date) return '';
+
+    return date
+        .toLocaleTimeString('en-US', timeOptions)
+        .replace(':00', '')
+        .replace(/\s+(AM|PM)$/i, '\u00A0$1');
+};
 
 // Formats an event's available start or start/end time.
 const formatEventTime = event => {
@@ -104,41 +109,95 @@ const formatEventTime = event => {
     return `${startTime} – ${formatTime(end)}`;
 };
 
-// Formats event date parts for the event card date rail.
+// Formats one date into the parts used by an event date rail.
+const getEventDisplayDateParts = date => ({
+    month: date.toLocaleDateString('en-US', {
+        month: 'short'
+    }).toUpperCase(),
+    day: String(date.getDate()),
+    weekday: date.toLocaleDateString('en-US', {
+        weekday: 'short'
+    })
+});
+
+// Formats event date parts, including a multi-day range when present.
 const formatEventDateParts = event => {
     const start = parseLocalDateTime(event.start);
+    const end = parseLocalDateTime(event.end);
 
     if (!start) {
         return {
-            month: '',
-            day: '',
-            weekday: '',
+            isRange: false,
+            start: {
+                month: '',
+                day: '',
+                weekday: ''
+            },
+            end: null,
             time: ''
         };
     }
 
+    const isRange = Boolean(
+        end &&
+        getDateKey(start) !== getDateKey(end)
+    );
+
     return {
-        month: start.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
-        day: String(start.getDate()),
-        weekday: start.toLocaleDateString('en-US', { weekday: 'short' }),
+        isRange,
+        start: getEventDisplayDateParts(start),
+        end: isRange
+            ? getEventDisplayDateParts(end)
+            : null,
         time: formatEventTime(event)
     };
 };
 
-// Formats a full event date and any available time information.
+// Formats a full event date or date range.
 const formatEventDate = event => {
     const start = parseLocalDateTime(event.start);
+    const end = parseLocalDateTime(event.end);
+
     if (!start) return '';
 
-    const dateText = start.toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-    });
+    const isRange = Boolean(
+        end &&
+        getDateKey(start) !== getDateKey(end)
+    );
     const timeText = formatEventTime(event);
+    let dateText;
 
-    return timeText ? `${dateText} · ${timeText}` : dateText;
+    if (isRange) {
+        const sameYear =
+            start.getFullYear() === end.getFullYear();
+
+        const startText = start.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: sameYear ? undefined : 'numeric'
+        });
+
+        const endText = end.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
+
+        dateText = `${startText} – ${endText}`;
+    } else {
+        dateText = start.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    }
+
+    return timeText
+        ? `${dateText} · ${timeText}`
+        : dateText;
 };
 
 // Formats an internal date key for holiday summaries.
