@@ -9,25 +9,25 @@ const calendarEventCategories = [
 		id: 'fundraiser',
 		label: 'Fundraiser',
 		icon: 'fa-hand-holding-heart',
-		badgeClass: 'bg-yellow-100 text-yellow-900 border-yellow-200'
+		badgeClass: 'bg-rose-100 text-rose-900 border-rose-300'
 	},
 	{
 		id: 'service',
 		label: 'Service Project',
 		icon: 'fa-people-carry-box',
-		badgeClass: 'bg-green-100 text-green-900 border-green-200'
+		badgeClass: 'bg-green-100 text-green-900 border-green-300'
 	},
 	{
 		id: 'community',
 		label: 'Community Event',
 		icon: 'fa-people-group',
-		badgeClass: 'bg-purple-100 text-purple-900 border-purple-200'
+		badgeClass: 'bg-purple-100 text-purple-900 border-purple-300'
 	},
 	{
 		id: 'club',
 		label: 'Club Event',
 		icon: 'fa-users',
-		badgeClass: 'bg-[var(--navy)] text-[#facc15] border-[#facc15]'
+		badgeClass: 'bg-navy text-gold border-gold'
 	},
 	{
 		id: 'federal-holiday',
@@ -45,14 +45,14 @@ const calendarEventCategories = [
 		id: 'observance',
 		label: 'Calendar Observance',
 		icon: 'fa-calendar-day',
-		badgeClass: 'bg-rose-100 text-rose-900 border-rose-200'
+		badgeClass: 'bg-sky-100 text-sky-900 border-sky-300'
 	},
 	{
 		id: 'local',
 		label: 'Local Event',
 		icon: 'fa-location-dot',
-		badgeClass: 'bg-teal-100 text-teal-900 border-teal-200'
-	},
+		badgeClass: 'bg-teal-100 text-teal-900 border-teal-300'
+	}
 ];
 
 const calendarRecurringDatesByYear = {

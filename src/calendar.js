@@ -52,17 +52,17 @@
             :id="'event-' + event.id"
             :class="getMajorEventClass(event)"
         >
-            <div class="flex min-w-0 flex-col gap-2">
+            <div class="flex min-w-0 flex-col">
                 <button
                     type="button"
-                    class="event-date-rail"
+                    class="event-date-rail max-sm:flex-row max-sm:items-center max-sm:justify-between max-sm:gap-3 max-sm:px-4 max-sm:py-3 max-sm:text-left"
                     :style="getEventDateStyle(event)"
-                    :aria-label="'Show ' + formatMonthYearForEvent(event) + ' on the calendar'"
-                    @click="goToEventMonth(event)"
+                    :aria-label="'Show events for ' + formatEventDate(event)"
+                    @click="openEventDayModal(event)"
                 >
                     <div
                         v-if="!formatEventDateParts(event).isRange"
-                        class="event-date-single flex w-full flex-col items-center"
+                        class="event-date-single flex w-full flex-col items-center max-sm:hidden"
                     >
                         <div class="event-date-rail-month text-xs font-black uppercase tracking-widest text-navy">
                             {{ formatEventDateParts(event).start.month }}
@@ -78,15 +78,32 @@
                     </div>
 
                     <div
+                        v-if="!formatEventDateParts(event).isRange"
+                        class="hidden min-w-0 items-baseline gap-2 max-sm:flex py-2"
+                    >
+                        <span class="font-serif text-md font-bold text-navy">
+                            {{ formatEventMobileDateParts(event).weekday }},
+                        </span>
+
+                        <span class="font-serif text-md font-bold text-navy">
+                            {{ formatEventMobileDateParts(event).month }}
+                        </span>
+
+                        <span class="font-serif text-3xl font-black leading-none text-gray-900">
+                            {{ formatEventMobileDateParts(event).day }}
+                        </span>
+                    </div>
+
+                    <div
                         v-else
-                        class="event-date-range flex w-full flex-col items-center gap-1"
+                        class="event-date-range flex w-full flex-col items-center gap-1 max-sm:grid max-sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] max-sm:gap-3"
                     >
                         <div class="flex w-full flex-col items-center">
                             <div class="event-date-rail-month text-xs font-black uppercase tracking-widest text-navy">
                                 {{ formatEventDateParts(event).start.month }}
                             </div>
 
-                            <div class="event-date-rail-day mt-1 font-serif font-black leading-none text-gray-900">
+                            <div class="event-date-rail-day mt-1 font-serif text-2xl font-black leading-none text-gray-900 sm:text-3xl">
                                 {{ formatEventDateParts(event).start.day }}
                             </div>
 
@@ -96,10 +113,11 @@
                         </div>
 
                         <div
-                            class="event-date-range-separator my-1 text-[0.6rem] font-black uppercase tracking-widest text-gray-400"
+                            class="event-date-range-separator my-1 text-[0.65rem] font-black uppercase tracking-wider text-gray-400 max-sm:m-0"
                             aria-hidden="true"
                         >
-                            to
+                            <span class="sm:hidden">through</span>
+                            <span class="hidden sm:inline">to</span>
                         </div>
 
                         <div class="flex w-full flex-col items-center">
@@ -107,7 +125,7 @@
                                 {{ formatEventDateParts(event).end.month }}
                             </div>
 
-                            <div class="event-date-rail-day mt-1 font-serif font-black leading-none text-gray-900">
+                            <div class="event-date-rail-day mt-1 font-serif text-2xl font-black leading-none text-gray-900 sm:text-3xl">
                                 {{ formatEventDateParts(event).end.day }}
                             </div>
 
@@ -119,18 +137,20 @@
 
                     <div
                         v-if="formatEventDateParts(event).time"
-                        class="event-date-rail-time mt-2 w-full border-t border-gray-200 pt-2 text-[0.7rem] font-black leading-snug text-gray-700"
+                        class="event-date-rail-time mt-2 w-full border-t border-gray-200 pt-2 text-md font-black leading-snug text-gray-700 max-sm:mt-0 max-sm:w-auto max-sm:shrink-0 max-sm:border-l max-sm:border-t-0 max-sm:pl-4 max-sm:pt-0 max-sm:text-right"
                     >
                         {{ formatEventDateParts(event).time }}
                     </div>
                 </button>
 
-                <span
-                    :class="'calendar-category-badge w-full justify-center whitespace-normal px-2 text-center text-[0.65rem] leading-tight max-sm:mx-4 max-sm:mb-3 max-sm:w-fit max-sm:self-start ' + getCategory(event.category).badgeClass"
-                >
-                    <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
-                    {{ getCategory(event.category).label }}
-                </span>
+                <div class="relative z-10 flex justify-center">
+                    <span
+                        :class="'calendar-category-badge -mt-2.5 w-fit justify-center whitespace-normal px-3 py-1 text-center text-[0.65rem] leading-tight shadow-sm ' + getCategory(event.category).badgeClass"
+                    >
+                        <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
+                        {{ getCategory(event.category).label }}
+                    </span>
+                </div>
             </div>
 
             <div class="min-w-0 max-sm:p-4">
@@ -198,14 +218,14 @@
 
                     <div
                         v-if="shouldShowLinks(event)"
-                        class="flex flex-col gap-2 sm:flex-row sm:flex-wrap max-sm:grid max-sm:grid-cols-1"
+                        class="flex flex-col gap-2 sm:flex-row sm:flex-wrap"
                     >
                         <a
                             v-for="link in getVisibleLinks(event)"
                             :href="link.href"
                             target="_blank"
                             rel="noopener"
-                            class="event-link-button max-sm:w-full"
+                            class="event-link-button w-full sm:w-auto"
                         >
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             {{ link.label }}
@@ -216,57 +236,57 @@
         </article>
     `;
 
+
     // Builds the compact event treatment used for meetings and holidays.
     const getMinorEventTemplate = () => `
         <article
             v-else
-            :class="getMinorEventClass(event)"
+            :class="getMinorEventClass(event) + ' max-sm:grid-cols-[3rem_minmax(0,1fr)] max-sm:gap-2.5 max-sm:p-2.5'"
         >
             <button
                 type="button"
-                class="minor-event-date"
+                class="minor-event-date min-h-12 py-1.5 max-sm:h-12 max-sm:min-h-12 max-sm:rounded-lg"
                 :style="getEventDateStyle(event)"
-                :aria-label="'Show ' + formatMonthYearForEvent(event) + ' on the calendar'"
-                @click="goToEventMonth(event)"
+                :aria-label="'Show events for ' + formatEventDate(event)"
+                @click="openEventDayModal(event)"
             >
-                <span class="text-[0.65rem] font-black uppercase tracking-wider text-navy">
+                <span class="text-[0.65rem] font-black uppercase tracking-wider text-navy max-sm:text-[0.6rem]">
                     {{ formatEventDateParts(event).start.month }}
                 </span>
 
-                <span class="font-serif text-xl font-black leading-none text-gray-800">
+                <span class="font-serif text-xl font-black leading-none text-gray-800 max-sm:text-lg">
                     {{ formatEventDateParts(event).start.day }}
                 </span>
             </button>
 
             <div class="min-w-0">
                 <div class="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                    <h3 class="min-w-0 text-base font-bold leading-tight text-gray-800">
+                    <h3 class="min-w-0 text-base font-bold leading-tight text-gray-800 max-sm:text-[0.95rem]">
                         {{ event.title }}
                     </h3>
 
                     <span
-                        :class="'calendar-category-badge gap-1.5 px-2 py-0.5 text-[0.65rem] max-sm:self-start ' + getCategory(event.category).badgeClass"
+                        :class="'calendar-category-badge gap-1.5 px-2 py-0.5 text-[0.65rem] max-sm:w-fit max-sm:self-start max-sm:text-[0.6rem] ' + getCategory(event.category).badgeClass"
                     >
                         <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
                         {{ getCategory(event.category).label }}
                     </span>
                 </div>
 
-                <p class="mt-1 text-sm font-semibold text-gray-500">
+                <p class="mt-1 text-sm font-semibold leading-snug text-gray-500 max-sm:text-xs">
                     {{ formatEventDate(event) }}
                 </p>
 
                 <p
                     v-if="event.locationName"
-                    class="mt-1 flex items-center gap-1.5 text-xs text-gray-500"
+                    class="mt-1 flex items-center gap-1.5 text-xs text-gray-500 max-sm:hidden"
                 >
                     <i class="fa-solid fa-location-dot text-yellow-500"></i>
                     {{ event.locationName }}
                 </p>
             </div>
         </article>
-    `;
-
+    `;    
     const getCalendarTemplate = () => `
         <div id="calendar-scroll-viewport">
             <section
@@ -576,30 +596,48 @@
                         class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5"
                     >
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                            <h3 class="text-xl font-bold text-navy md:text-2xl">
-                                {{ event.title }}
-                            </h3>
+                            <div class="min-w-0">
+                                <h3 class="font-serif text-xl font-bold text-navy md:text-2xl">
+                                    {{ event.title }}
+                                </h3>
 
-                            <span :class="'calendar-category-badge ' + getCategory(event.category).badgeClass">
+                                <p class="mt-1 text-base font-semibold text-gray-600">
+                                    {{ formatEventDate(event) }}
+                                </p>
+                            </div>
+
+                            <span
+                                :class="'calendar-category-badge self-start ' + getCategory(event.category).badgeClass"
+                            >
                                 <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
                                 {{ getCategory(event.category).label }}
                             </span>
                         </div>
 
-                        <p class="mt-2 text-base font-bold text-gray-600">
-                            {{ formatEventDate(event) }}
-                        </p>
-
-                        <p
-                            v-if="isPastEvent(event)"
-                            class="mt-3 rounded-lg border-l-4 border-gray-400 bg-gray-100 px-3 py-2 text-sm font-bold text-gray-600"
+                        <div
+                            v-if="isEventInProgress(event) || isPastEvent(event)"
+                            class="mt-3 flex flex-wrap items-center gap-2"
                         >
-                            This event has passed.
-                        </p>
+                            <span
+                                v-if="isEventInProgress(event)"
+                                class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-gray-800"
+                            >
+                                <i class="fa-solid fa-hourglass-half"></i>
+                                {{ getEventTimeRemainingLabel(event) }}
+                            </span>
+
+                            <span
+                                v-if="isPastEvent(event)"
+                                class="inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-gray-100 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-gray-600"
+                            >
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                Event passed
+                            </span>
+                        </div>
 
                         <p
                             v-if="event.summary"
-                            class="mt-4 text-lg leading-relaxed text-gray-700 max-sm:text-base"
+                            class="mt-4 text-base leading-relaxed text-gray-700 md:text-lg"
                         >
                             {{ event.summary }}
                         </p>
@@ -608,9 +646,9 @@
                             v-if="event.locationName || event.locationAddress || event.room"
                             class="mt-4 flex items-start gap-3 rounded-xl bg-gray-50 p-4 text-base leading-relaxed text-gray-600"
                         >
-                            <i class="fa-solid fa-location-dot mt-1 text-yellow-500"></i>
+                            <i class="fa-solid fa-location-dot mt-1 shrink-0 text-yellow-500"></i>
 
-                            <div>
+                            <div class="min-w-0">
                                 <p
                                     v-if="event.locationName"
                                     class="font-bold text-gray-800"
@@ -622,10 +660,29 @@
                                     {{ event.locationAddress }}
                                 </p>
 
-                                <p v-if="event.room">
+                                <p
+                                    v-if="event.room"
+                                    class="mt-1 text-sm text-gray-500"
+                                >
                                     {{ event.room }}
                                 </p>
                             </div>
+                        </div>
+
+                        <div
+                            v-if="shouldShowLinks(event)"
+                            class="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap"
+                        >
+                            <a
+                                v-for="link in getVisibleLinks(event)"
+                                :href="link.href"
+                                target="_blank"
+                                rel="noopener"
+                                class="event-link-button w-full sm:w-auto"
+                            >
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                {{ link.label }}
+                            </a>
                         </div>
                     </article>
                 </div>
@@ -1135,7 +1192,30 @@
 
                 return getEventDateKey(event) === this.todayDateKey;
             },        
-            
+
+            // Formats a single event date for the compact mobile date rail.
+            formatEventMobileDateParts(event) {
+                const start = event ? parseLocalDateTime(event.start) : null;
+
+                if (!start) {
+                    return {
+                        weekday: '',
+                        month: '',
+                        day: ''
+                    };
+                }
+
+                return {
+                    weekday: start.toLocaleDateString('en-US', {
+                        weekday: 'long'
+                    }),
+                    month: start.toLocaleDateString('en-US', {
+                        month: 'long'
+                    }),
+                    day: start.getDate()
+                };
+            },            
+
             // Formats the remaining calendar days for an event already in progress.
             getEventTimeRemainingLabel(event) {
                 const end = parseLocalDateTime(event.end);
@@ -1348,6 +1428,27 @@
 
                 return true;
             },            
+
+            // Opens the day modal from an event card's date button.
+            openEventDayModal(event) {
+                const start = event ? parseLocalDateTime(event.start) : null;
+
+                if (!start) {
+                    return;
+                }
+
+                const dateKey = getEventDateKey(event);
+                const events = this.getEventsForDate(
+                    start.getFullYear(),
+                    start.getMonth(),
+                    start.getDate()
+                );
+
+                this.openDayModal({
+                    dateKey,
+                    events
+                });
+            },
 
             // Opens the event-details modal for a populated calendar day.
             openDayModal(cell) {

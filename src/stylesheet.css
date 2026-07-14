@@ -369,6 +369,19 @@ h4,
 	color: #9ca3af;
 }
 
+@media (max-width: 640px) {
+
+	.page-shell,
+	.page-shell-wide {
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+	}
+
+	.section-card-compact {
+		padding: 1rem 0.5rem;
+	}
+}
+
 @media (min-width: 768px) {
 	.site-brand-logo { height: 3rem; }
 	.home-main { padding-top: 5rem; }

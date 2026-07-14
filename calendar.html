@@ -187,7 +187,7 @@
 		/* Shared event components */
 
 		.calendar-category-badge {
-			@apply inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-xs font-black uppercase tracking-wide;
+			@apply inline-flex shrink-0 items-center mt-0 gap-2 rounded-full border px-3 py-1 text-xs font-black uppercase tracking-wide;
 		}
 
 		.event-card {
@@ -487,10 +487,6 @@
             <section class="section-card-compact" aria-label="Upcoming calendar events">
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3"
                     aria-label="Filter calendar events">
-                    <span class="text-xs font-black uppercase tracking-widest text-gray-500">
-                        Show
-                    </span>
-
                     <label class="calendar-filter">
                         <input type="checkbox" v-model="showRecurringEvents">
                         <span>Recurring events</span>
