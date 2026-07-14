@@ -365,7 +365,7 @@
                             :title="event.title"
                         >
                             <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
-                            <span>{{ event.title }}</span>
+                            <span>{{ event.calendarLabel || event.title }}</span>
                         </div>
                     </div>
                 </div>

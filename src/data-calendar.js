@@ -128,7 +128,8 @@ const getWeeklyDates = (startDate, endDate) => {
 const calendarRecurringEventSets = [
 	{
 		id: 'club-meeting',
-		title: 'Club Meeting',
+		title: 'Fallbrook Ranch Lions Club Meeting',
+		calendarLabel: 'Club Meeting',
 		category: 'meeting',
 		startTime: '18:00',
 		endTime: '19:00',
@@ -148,6 +149,7 @@ const calendarRecurringEventSets = [
 	{
 		id: 'fallbrook-farmers-market',
 		title: 'Farmers Market Downtown on Main Ave.',
+		calendarLabel: 'Farmers Market',		
 		category: 'local',
 		startTime: '09:00',
 		endTime: '13:00',

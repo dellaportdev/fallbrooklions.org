@@ -363,6 +363,7 @@ const getCalendarEvents = () => {
     const buildRecurringEvent = (set, date) => ({
         id: `${set.id}-${date}`,
         title: set.title,
+        calendarLabel: set.calendarLabel || set.title,
         category: set.category,
         start: `${date}T${set.startTime}:00`,
         end: `${date}T${set.endTime}:00`,
