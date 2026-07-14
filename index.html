@@ -57,23 +57,6 @@
 	<script src="./src/site.js" defer></script>
 	<script src="./src/data.js" defer></script>
 	<script src="./src/scripts.js" defer></script>
-	<script>
-		window.addEventListener('DOMContentLoaded', function () {
-			if (typeof datesByYear !== 'undefined') {
-				var future2026 = [
-					"04-28", "05-12", "05-26", "06-09", "06-23",
-					"07-14", "07-28", "08-11", "08-25",
-					"09-08", "09-22", "10-13", "10-27", "11-17"
-				];
-				if (!datesByYear[2026]) datesByYear[2026] = [];
-				future2026.forEach(function (d) {
-					if (datesByYear[2026].indexOf(d) === -1) datesByYear[2026].push(d);
-				});
-				datesByYear[2026].sort();
-				if (typeof renderNextMeetingDate === 'function') renderNextMeetingDate();
-			}
-		});
-	</script>
 
 </head>
 
