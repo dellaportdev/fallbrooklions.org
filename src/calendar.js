@@ -37,6 +37,8 @@
             todayDateKey: getPacificTodayKey(),
             modalDateKey: null,
             isDayModalOpen: false,
+            modalDateKey: null,
+            modalEvents: [],
             showNextYearEvents: false,
             showRecurringEvents: true,
             showHolidayEvents: true
@@ -532,18 +534,18 @@
 
         <div
             v-if="isDayModalOpen"
-            class="calendar-day-modal-backdrop"
+            class="calendar-day-modal-backdrop fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto bg-black/60 p-2 sm:items-center sm:p-4"
             role="presentation"
             @click="handleModalBackdrop($event)"
         >
             <section
-                class="calendar-day-modal"
+                class="calendar-day-modal my-auto flex max-h-[calc(100vh-1rem)] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl sm:max-h-[calc(100vh-2rem)] sm:rounded-2xl"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="calendar-day-modal-title"
                 @keydown="handleModalKeydown($event)"
             >
-                <header class="flex shrink-0 items-start justify-between gap-4 border-b border-gray-200 bg-slate-50 px-5 py-4 md:px-6 max-sm:px-4 max-sm:py-3">
+                <header class="flex shrink-0 items-start justify-between gap-4 border-b border-gray-200 bg-slate-50 px-4 py-3 sm:px-5 sm:py-4 md:px-6">
                     <div>
                         <p class="text-xs font-black uppercase tracking-widest text-blue-700">
                             Calendar Events
@@ -551,7 +553,7 @@
 
                         <h2
                             id="calendar-day-modal-title"
-                            class="mt-1 font-serif text-2xl font-bold text-navy md:text-3xl max-sm:text-xl"
+                            class="mt-1 font-serif text-xl font-bold text-navy sm:text-2xl md:text-3xl"
                         >
                             {{ modalDateLabel }}
                         </h2>
@@ -560,7 +562,7 @@
                     <button
                         id="calendar-day-modal-close"
                         type="button"
-                        class="calendar-day-modal-close"
+                        class="calendar-day-modal-close inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-xl text-gray-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-900/20"
                         aria-label="Close event details"
                         @click="closeDayModal"
                     >
@@ -568,10 +570,10 @@
                     </button>
                 </header>
 
-                <div class="space-y-4 overflow-y-auto p-5 md:p-6 max-sm:p-3">
+                <div class="space-y-4 overflow-y-auto p-3 sm:p-5 md:p-6">
                     <article
                         v-for="event in modalEvents"
-                        class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm max-sm:p-4"
+                        class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5"
                     >
                         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                             <h3 class="text-xl font-bold text-navy md:text-2xl">
@@ -1347,33 +1349,30 @@
                 return true;
             },            
 
-            // Opens a read-only modal containing every event on a calendar day.
+            // Opens the event-details modal for a populated calendar day.
             openDayModal(cell) {
-                if (!cell.events.length) return;
+                if (!cell || !cell.events || !cell.events.length) {
+                    return;
+                }
 
                 this.modalDateKey = cell.dateKey;
+                this.modalEvents = cell.events;
                 this.isDayModalOpen = true;
-                document.body.classList.add(
-                    'calendar-modal-open'
-                );
+
+                document.body.classList.add('calendar-modal-open');
 
                 requestAnimationFrame(() => {
-                    document
-                        .getElementById(
-                            'calendar-day-modal-close'
-                        )
-                        ?.focus();
+                    document.getElementById('calendar-day-modal-close')?.focus();
                 });
             },
 
-            // Handles keyboard selection for calendar day cells.
+            // Opens a populated calendar day with the keyboard.
             handleDayKeydown(cell, event) {
-                if (!cell.events.length) return;
+                if (!cell.events.length) {
+                    return;
+                }
 
-                if (
-                    event.key !== 'Enter' &&
-                    event.key !== ' '
-                ) {
+                if (event.key !== 'Enter' && event.key !== ' ') {
                     return;
                 }
 
@@ -1381,29 +1380,29 @@
                 this.openDayModal(cell);
             },
 
-            // Closes the day modal and restores page scrolling.
+            // Closes the event-details modal.
             closeDayModal() {
                 this.isDayModalOpen = false;
                 this.modalDateKey = null;
-                document.body.classList.remove(
-                    'calendar-modal-open'
-                );
+                this.modalEvents = [];
+
+                document.body.classList.remove('calendar-modal-open');
             },
 
-            // Closes the modal when its backdrop is clicked.
+            // Closes the modal when its backdrop itself is clicked.
             handleModalBackdrop(event) {
                 if (event.target === event.currentTarget) {
                     this.closeDayModal();
                 }
             },
 
-            // Closes the modal when Escape is pressed inside it.
+            // Provides Escape-key handling inside the modal.
             handleModalKeydown(event) {
                 if (event.key === 'Escape') {
                     event.preventDefault();
                     this.closeDayModal();
                 }
-            }
+            },
         };
     };
 

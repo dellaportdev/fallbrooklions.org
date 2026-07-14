@@ -271,28 +271,6 @@
 			@apply mt-8;
 		}
 
-		/* Day modal */
-
-		.calendar-day-modal-backdrop {
-			@apply fixed inset-0 z-60 flex items-start justify-center overflow-y-auto bg-black/60 p-4 sm:items-center;
-		}
-
-		.calendar-day-modal {
-			@apply my-auto flex max-h-[calc(100vh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl;
-		}
-
-		.calendar-day-modal-close {
-			@apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-xl text-gray-600 transition;
-		}
-
-		.calendar-day-modal-close:hover {
-			@apply border-blue-300 bg-blue-50 text-navy;
-		}
-
-		.calendar-day-modal-close:focus-visible {
-			@apply outline-none ring-4 ring-blue-900/20;
-		}
-
 		@media (max-width: 640px) {
 			.calendar-month-nav {
 				grid-template-columns: repeat(2, minmax(0, 1fr));
