@@ -151,7 +151,7 @@ h4,
 }
 
 .page-main {
-	padding-top: 5rem;
+	padding-top: 7rem;
 	padding-bottom: 2.5rem;
 }
 
@@ -383,8 +383,8 @@ h4,
 }
 
 @media (min-width: 768px) {
-	.site-brand-logo { height: 3rem; }
-	.home-main { padding-top: 5rem; }
+	.site-brand-logo { height: 5rem; }
+	.home-main { padding-top: 6rem; }
 
 	.hero-panel,
 	.home-hero-panel {
@@ -393,7 +393,8 @@ h4,
 
 	.home-hero-panel {
 		flex-direction: row;
-		gap: 2.5rem;
+		/* gap: 2.5rem; */
+		margin-top:1rem;
 		text-align: left;
 	}
 
