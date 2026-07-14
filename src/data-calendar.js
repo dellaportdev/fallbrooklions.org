@@ -52,7 +52,13 @@ const calendarEventCategories = [
 		label: 'Local Event',
 		icon: 'fa-location-dot',
 		badgeClass: 'bg-teal-100 text-teal-900 border-teal-300'
-	}
+	},
+	{
+		id: 'district4l6',
+		label: 'Lions D4-L6',
+		icon: 'fa-shield-halved',
+		badgeClass: 'bg-navy text-gold border-gold'
+	},
 ];
 
 const calendarRecurringDatesByYear = {
@@ -193,12 +199,12 @@ const calendarSingleEvents = [
 	},
 	{
 		id: 'installation-dinner-2026',
-		title: '2026 Installation Dinner',
+		title: 'Fallbrook Ranch Installation Dinner',
 		category: 'club',
 		start: '2026-07-14T18:00:00',
 		end: null,
 		timezone: 'America/Los_Angeles',
-		summary: 'Installation dinner at Backdraft Bar & Grill in Bonsall.',
+		summary: 'Installation dinner at Backdraft Bar & Grill in Bonsall at 6pm.',
 		locationName: 'Backdraft Bar & Grill',
 		locationAddress: '5525 Mission Rd., Ste. F, Bonsall, CA',
 		links: [
@@ -360,6 +366,300 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://business.fallbrookchamberofcommerce.org/eventcalendar/Details/save-the-date-annual-golf-tournament-2026-1618782?sourceTypeId=Website'
+			}
+		]
+	}
+];
+
+const calendarDistrict4L6Events = [
+	{
+		id: 'district4l6-tea-time-fundraiser-2026',
+		title: 'Tea Time Fundraiser',
+		category: 'district4l6',
+		start: '2026-06-27T11:00:00',
+		end: '2026-06-27T13:30:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Fundraiser supporting the Blind Community Center of San Diego, a District 4-L6 endorsed project.',
+		locationName: 'Blind Community Center Ballroom',
+		locationAddress: '1805 Upas Street, San Diego, CA 92103',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'district4l6-installation-2026',
+		title: 'District 4-L6 Installation of Officers and Cabinet Members',
+		category: 'district4l6',
+		start: '2026-08-01T11:00:00',
+		end: '2026-08-01T16:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'District 4-L6 installation luncheon honoring incoming officers, cabinet members, and heroes in service.',
+		locationName: 'DoubleTree by Hilton San Diego Bayside',
+		locationAddress: '4875 N. Harbor Drive, San Diego, CA 92106',
+		links: [
+			{
+				label: 'Register',
+				href: 'https://forms.gle/'
+			},
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'district4l6-multi-club-installation-2026',
+		title: 'District 4-L6 Multi-Club Installation',
+		category: 'district4l6',
+		start: '2026-08-15T11:00:00',
+		end: '2026-08-15T15:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Multi-club installation of new officers and induction of new members.',
+		locationName: 'Crowne Plaza San Diego',
+		locationAddress: '2270 Hotel Circle N., San Diego, CA 92108',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'district4l6-veterans-of-the-year-2026',
+		title: 'Lions Veterans of the Year Luncheon',
+		category: 'district4l6',
+		start: '2026-11-07T11:00:00',
+		end: '2026-11-07T15:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'District 4-L6 annual recognition luncheon honoring the dedicated service of Lion veterans.',
+		locationName: 'Venue to be announced',
+		locationAddress: '',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'district4l6-holiday-party-2026',
+		title: 'District 4-L6 Holiday Party',
+		category: 'district4l6',
+		start: '2026-12-13T00:00:00',
+		end: null,
+		timezone: 'America/Los_Angeles',
+		summary: 'District 4-L6 holiday luncheon. Time and location were not included in the newsletter.',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'district4l6-melvin-jones-luncheon-2027',
+		title: 'District 4-L6 LCIF Melvin Jones Luncheon',
+		category: 'district4l6',
+		start: '2027-01-09T11:00:00',
+		end: '2027-01-09T15:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'District 4-L6 LCIF luncheon honoring the legacy of Lions Clubs International founder Melvin Jones.',
+		locationName: 'Elks Lodge',
+		locationAddress: 'El Cajon, CA',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'miramar-americas-250th-concert-2026',
+		title: 'America’s 250th Birthday Patriotic Concert',
+		category: 'district4l6',
+		start: '2026-07-25T09:00:00',
+		end: '2026-07-25T11:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Veterans and community patriotic concert celebrating the 250th birthday of the United States.',
+		locationName: 'Miramar National Cemetery',
+		locationAddress: '5795 Nobel Drive, San Diego, CA 92122',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'west-shores-taco-fundraiser-2026',
+		title: 'West Shores Lions Club Taco Fundraiser',
+		category: 'district4l6',
+		start: '2026-06-26T00:00:00',
+		end: '2026-06-27T23:59:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Two-day taco fundraiser hosted by the West Shores Lions Club.',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'san-diego-forever-installation-2026',
+		title: 'San Diego Forever Lions Club Installation',
+		category: 'district4l6',
+		start: '2026-06-27T19:00:00',
+		end: '2026-06-28T00:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Installation of officers and induction of new members.',
+		locationName: 'Dance Headquarters',
+		locationAddress: '5035 Shawline Street, San Diego, CA 92111',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'downtown-san-diego-installation-2026',
+		title: 'Downtown San Diego Lions Club Installation Dinner',
+		category: 'district4l6',
+		start: '2026-06-30T18:00:00',
+		end: null,
+		timezone: 'America/Los_Angeles',
+		summary: 'Installation dinner with a 6:00 p.m. reception followed by dinner at 7:00 p.m.',
+		locationName: 'Lions Manor',
+		locationAddress: '310 Market Street, San Diego, CA',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'national-city-carnival-2026',
+		title: 'National City Host Lions Club 80th Annual Carnival',
+		category: 'district4l6',
+		start: '2026-07-01T17:00:00',
+		end: '2026-07-05T23:00:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Five-day community carnival with rides, games, food, entertainment, and July 4 fireworks.',
+		locationName: 'Kimball Park',
+		locationAddress: '12th Street and D Avenue, National City, CA',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'san-diego-majestic-casino-run-2026',
+		title: 'San Diego Majestic Lions Casino Run',
+		category: 'district4l6',
+		start: '2026-07-26T08:30:00',
+		end: '2026-07-26T15:30:00',
+		timezone: 'America/Los_Angeles',
+		summary: 'Fundraising casino bus trip to Viejas benefiting the club’s humanitarian services.',
+		locationName: 'Sweetwater Park & Ride',
+		locationAddress: '2300 Sweetwater Road, National City, CA 91950',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'lemon-grove-car-show-2027',
+		title: 'Lemon Grove Lions Club Car Show Fundraiser',
+		category: 'district4l6',
+		start: '2027-07-26T00:00:00',
+		end: null,
+		timezone: 'America/Los_Angeles',
+		summary: 'Car show fundraiser. The newsletter lists July 26, 2027; this year should be verified.',
+		locationName: 'Mount Miguel High School',
+		locationAddress: '',
+		links: [
+			{
+				label: 'Event Information',
+				href: 'https://www.paypal.com/'
+			},
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'san-diego-pathfinders-installation-2026',
+		title: 'San Diego Pathfinders Lions Club Installation',
+		category: 'district4l6',
+		start: '2026-09-12T00:00:00',
+		end: null,
+		timezone: 'America/Los_Angeles',
+		summary: 'Installation event hosted by the San Diego Pathfinders Lions Club.',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'oceanside-sea-lions-golf-tournament-2026',
+		title: 'Oceanside Sea Lions Golf Tournament',
+		category: 'district4l6',
+		start: '2026-09-26T00:00:00',
+		end: null,
+		timezone: 'America/Los_Angeles',
+		summary: 'Golf tournament hosted by the Oceanside Sea Lions.',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'san-diego-stars-installation-2026',
+		title: 'San Diego Stars Lions Club Installation and Induction',
+		category: 'district4l6',
+		start: '2026-10-23T00:00:00',
+		end: null,
+		timezone: 'America/Los_Angeles',
+		summary: 'Sixth annual installation of officers and induction of new members.',
+		links: [
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+			}
+		]
+	},
+	{
+		id: 'lions-international-convention-2026',
+		title: '107th Lions International Convention',
+		category: 'district4l6',
+		start: '2026-07-03T00:00:00',
+		end: '2026-07-07T23:59:00',
+		timezone: 'Asia/Hong_Kong',
+		summary: 'Lions International Convention in Hong Kong, including the International Parade on July 7.',
+		locationName: 'Hong Kong',
+		locationAddress: '',
+		links: [
+			{
+				label: 'Convention Registration',
+				href: 'https://www.mcievents.com/'
+			},
+			{
+				label: 'Newsletter',
+				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
 			}
 		]
 	}

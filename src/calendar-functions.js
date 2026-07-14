@@ -386,18 +386,10 @@ const getCalendarEvents = () => {
     }
 
     return recurringEvents
-        .concat(
-            typeof calendarSingleEvents !== 'undefined'
-                ? calendarSingleEvents || []
-                : []
-        )
+        .concat(typeof calendarSingleEvents !== 'undefined' ? calendarSingleEvents || [] : [])
+        .concat(typeof calendarDistrict4L6Events !== 'undefined' ? calendarDistrict4L6Events || [] : [])
         .concat(getOfficialHolidayEvents())
-        .concat(getCalendarObservanceEvents())
-        .sort(
-            (a, b) =>
-                parseLocalDateTime(a.start) -
-                parseLocalDateTime(b.start)
-        );
+        .sort((a, b) => parseLocalDateTime(a.start) - parseLocalDateTime(b.start));
 };
 
 // Gets a known category or the fallback category.
