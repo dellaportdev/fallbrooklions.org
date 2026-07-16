@@ -17,6 +17,7 @@
 
     const {
         getCalendarTemplate,
+        getEventIndexTemplate,
         getEventListTemplate
     } = window.CalendarTemplates;
 
@@ -87,6 +88,24 @@
                     parseInt(this.todayDateKey.slice(0, 4), 10)
                 );
             },
+
+            get upcomingEventIndex() {
+                const todayKey = getPacificTodayKey();
+                const currentYear = getPacificTodayParts().year;
+
+                return (this.events || [])
+                    .filter(event => {
+                        const start = parseLocalDateTime(event.start);
+
+                        return start &&
+                            start.getFullYear() === currentYear &&
+                            getEventDateKey(event) >= todayKey &&
+                            isPublicEvent(event);
+                    })
+                    .sort((a, b) => {
+                        return parseLocalDateTime(a.start) - parseLocalDateTime(b.start);
+                    });
+            },        
 
             get visibleCalendarCells() {
                 const cells = [];
@@ -225,6 +244,42 @@
             isPastEvent,
             formatEventDate,
             formatEventDateParts,
+
+            // Scrolls from the alphabetical index to the corresponding event card.
+            scrollToEvent(event) {
+                const target = document.getElementById(`event-${event.id}`);
+
+                if (!target) return;
+
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                history.replaceState(null, '', `#event-${event.id}`);
+
+                target.classList.remove('event-card-highlight');
+
+                requestAnimationFrame(() => {
+                    target.classList.add('event-card-highlight');
+                });
+
+                window.setTimeout(() => {
+                    target.classList.remove('event-card-highlight');
+                }, 1800);
+            },
+
+            // Formats the date shown before an event-index title.
+            formatEventIndexDate(event) {
+                const start = parseLocalDateTime(event.start);
+
+                if (!start) return '';
+
+                return start.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                });
+            },           
 
             // Builds an empty calendar grid cell.
             getEmptyCalendarCell(key) {
@@ -812,7 +867,23 @@
                 }
 
                 return true;
-            },            
+            }, 
+            
+            // Opens the calendar modal for an indexed event's date.
+            openEventIndexModal(event) {
+                const dateKey = getEventDateKey(event);
+                const events = (this.events || [])
+                    .filter(item => getEventDateKey(item) === dateKey);
+
+                if (!events.length) return;
+
+                this.openDayModal({
+                    key: dateKey,
+                    day: parseLocalDateTime(event.start).getDate(),
+                    dateKey,
+                    events
+                });
+            },         
 
             // Opens the day modal from an event card's date button.
             openEventDayModal(event) {
@@ -912,6 +983,7 @@
     const setCalendarTemplates = () => {
         const templateTargets = [
             ['calendar-grid', getCalendarTemplate],
+            ['event-list', getEventIndexTemplate],
             ['calendar-list', getEventListTemplate]
         ];
 

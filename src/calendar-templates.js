@@ -4,6 +4,7 @@
     const getMajorEventTemplate = majorCondition => `
         <article
             v-if="${majorCondition}"
+            :key="event.id"
             :id="'event-' + event.id"
             :class="getMajorEventClass(event)"
         >
@@ -194,6 +195,7 @@
     // Builds the compact event treatment used for meetings and holidays.
     const getMinorEventTemplate = () => `
         <article
+            :key="event.id"
             v-else
             :class="getMinorEventClass(event) + ' max-sm:grid-cols-[3rem_minmax(0,1fr)] max-sm:gap-2.5 max-sm:p-2.5'"
         >
@@ -660,6 +662,41 @@
         </div>
     `;
 
+    // Builds an alphabetical index of upcoming events.
+    const getEventIndexTemplate = () => `
+	<p
+		v-if="!upcomingEventIndex.length"
+		class="text-base text-gray-700"
+	>
+		No upcoming events are listed.
+	</p>
+
+	<ul
+		v-else
+		class="columns-1 gap-10 text-base sm:columns-2 lg:columns-3"
+	>
+		<li
+			v-for="event in upcomingEventIndex"
+			:key="'event-index-' + event.id"
+			class="mb-2 break-inside-avoid"
+		>
+			<button
+				type="button"
+				class="group flex w-full items-start rounded-lg px-2 py-2 text-left text-gray-900 transition hover:bg-blue-50 hover:text-blue-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
+				@click="openEventIndexModal(event)"
+			>
+				<span class="w-20 shrink-0 font-black tabular-nums text-blue-900">
+					{{ formatEventIndexDate(event) }}
+				</span>
+
+				<span class="min-w-0 whitespace-normal break-words font-semibold leading-snug group-hover:underline">
+					{{ event.title }}
+				</span>
+			</button>
+		</li>
+	</ul>
+`;
+
     // Builds a chronological mixed list of major and minor events.
     const getEventItemsTemplate = (
         eventsExpression,
@@ -683,6 +720,7 @@
 
     window.CalendarTemplates = {
         getCalendarTemplate,
+        getEventIndexTemplate,
         getEventListTemplate
     };
 })();
