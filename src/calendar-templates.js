@@ -665,31 +665,50 @@
     // Builds an alphabetical index of upcoming events.
     const getEventIndexTemplate = () => `
 	<p
-		v-if="!upcomingEventIndex.length"
-		class="text-base text-gray-700"
+		v-if="!eventIndex.length"
+		class="text-sm text-gray-600"
 	>
-		No upcoming events are listed.
+		No events are listed for this year.
 	</p>
 
 	<ul
 		v-else
-		class="columns-1 gap-10 text-base sm:columns-2 lg:columns-3"
+		class="columns-1 gap-8 text-md sm:columns-2 lg:columns-3"
 	>
 		<li
-			v-for="event in upcomingEventIndex"
+			v-for="event in eventIndex"
 			:key="'event-index-' + event.id"
-			class="mb-2 break-inside-avoid"
+			class="mb-1 break-inside-avoid"
 		>
 			<button
 				type="button"
-				class="group flex w-full items-start rounded-lg px-2 py-2 text-left text-gray-900 transition hover:bg-blue-50 hover:text-blue-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
+				:class="[
+					'group flex w-full items-start rounded-md px-1.5 py-1 text-left transition',
+					isPastEvent(event)
+						? 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
+						: 'text-gray-800 hover:bg-blue-50 hover:text-blue-950'
+				]"
 				@click="openEventIndexModal(event)"
 			>
-				<span class="w-20 shrink-0 font-black tabular-nums text-blue-900">
-					{{ formatEventIndexDate(event) }}
+				<span
+					class="flex w-20 shrink-0 items-baseline font-bold tabular-nums"
+					:class="isPastEvent(event) ? 'opacity-60' : ''"
+				>
+					<span
+						class="w-9 text-nowrap"
+						:style="getEventIndexMonthAccent(event)"
+					>
+						{{ formatEventIndexMonth(event) }} {{ formatEventIndexDay(event) }}
+					</span>
+
 				</span>
 
-				<span class="min-w-0 whitespace-normal break-words font-semibold leading-snug group-hover:underline">
+				<span
+					:class="[
+						'min-w-0 whitespace-normal break-words font-medium leading-snug group-hover:underline',
+						isPastEvent(event) ? 'opacity-70' : ''
+					]"
+				>
 					{{ event.title }}
 				</span>
 			</button>

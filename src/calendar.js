@@ -220,6 +220,21 @@
                 return this.nextYearMonthGroups.length > 0;
             },
 
+            // Gets every public event for the selected year in chronological order.
+            get eventIndex() {
+                return (this.events || [])
+                    .filter(event => {
+                        const start = parseLocalDateTime(event.start);
+
+                        return start &&
+                            start.getFullYear() === this.activeYear &&
+                            isPublicEvent(event);
+                    })
+                    .sort((a, b) => {
+                        return parseLocalDateTime(a.start) - parseLocalDateTime(b.start);
+                    });
+            },
+
             get modalEvents() {
                 if (!this.modalDateKey) return [];
 
@@ -244,6 +259,31 @@
             isPastEvent,
             formatEventDate,
             formatEventDateParts,
+
+            // Gets the abbreviated month for an event-index entry.
+            formatEventIndexMonth(event) {
+                const start = parseLocalDateTime(event.start);
+
+                return start
+                    ? start.toLocaleDateString('en-US', { month: 'short' })
+                    : '';
+            },
+
+            // Gets the day number for an event-index entry.
+            formatEventIndexDay(event) {
+                const start = parseLocalDateTime(event.start);
+
+                return start ? start.getDate() : '';
+            },
+
+            // Gets the month accent for an event-index entry.
+            getEventIndexMonthAccent(event) {
+                const start = parseLocalDateTime(event.start);
+
+                return start
+                    ? this.getMonthAccent(start.getMonth())
+                    : {};
+            },            
 
             // Scrolls from the alphabetical index to the corresponding event card.
             scrollToEvent(event) {
