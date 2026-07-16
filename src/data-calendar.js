@@ -49,7 +49,7 @@ const calendarEventCategories = [
 	},
 	{
 		id: 'local',
-		label: 'Local Event',
+		label: 'Community Event',
 		icon: 'fa-location-dot',
 		badgeClass: 'bg-teal-100 text-teal-900 border-teal-300'
 	},
@@ -262,6 +262,10 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://business.fallbrookchamberofcommerce.org/eventcalendar/Details/veteran-s-day-parade-1618784?sourceTypeId=Website'
+			},
+			{
+				label: 'Flyer',
+				href: 'https://res.cloudinary.com/micronetonline/image/upload/q_auto,f_auto,c_limit,w_1545,h_2000/v1777411908/tenants/02941da0-874d-452c-9aa3-e2b0a80d2303/2bf4c73bbb054078a22f4ac1e98361fb/Veterans-Day-2026.png'
 			}
 		]
 	},
@@ -297,7 +301,12 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://business.fallbrookchamberofcommerce.org/eventcalendar/Details/fallbrook-wine-trail-july-8-august-16-1618781?sourceTypeId=Website'
+			},
+			{
+				label: 'Flyer',
+				href: 'https://res.cloudinary.com/micronetonline/image/upload/q_auto,f_auto,c_crop,w_1430,h_2000,x_-1/v1781205861/tenants/02941da0-874d-452c-9aa3-e2b0a80d2303/4efd31fc63a0411fb9206c8fbf83e79c/Fallbrook-Wine-Trail-2026.png'
 			}
+
 		]
 	},
 	{
@@ -315,6 +324,10 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://www.fallbrookchamberofcommerce.org/fallbrook-harvest-faire-october/#scarecrowdays'
+			},
+			{
+				label: 'Flyer',
+				href: 'https://www.fallbrookchamberofcommerce.org/wp-content/uploads/sites/1842/2026/05/Scarecrows-of-all-categories-will-be-displayed-at-businesses-and-residences-throughout-October--1024x512.jpg.webp'
 			}
 		]
 	},
@@ -332,6 +345,10 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://www.fallbrookchamberofcommerce.org/fallbrook-harvest-faire-october/'
+			},
+			{
+				label: 'Flyer',
+				href: 'https://www.fallbrookchamberofcommerce.org/wp-content/uploads/sites/1842/2026/05/Harvest-Faire-Flyer-2026-768x994.jpg.webp'
 			}
 		]
 	},
@@ -349,6 +366,10 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://business.fallbrookchamberofcommerce.org/eventcalendar/Details/save-the-date-village-artisan-faire-2026-1618785?sourceTypeId=Website'
+			},
+			{
+				label: 'Flyer',
+				href: 'https://res.cloudinary.com/micronetonline/image/upload/q_auto,f_auto,c_limit,w_1275,h_1650/v1783543414/tenants/02941da0-874d-452c-9aa3-e2b0a80d2303/de505522e75a40d9bdaf73efa2c64338/VAF-flyer-2026.jpg'
 			}
 		]
 	},
@@ -366,6 +387,10 @@ const calendarSingleEvents = [
 			{
 				label: 'Learn More',
 				href: 'https://business.fallbrookchamberofcommerce.org/eventcalendar/Details/save-the-date-annual-golf-tournament-2026-1618782?sourceTypeId=Website'
+			},
+			{
+				label: 'Flyer',
+				href: 'https://res.cloudinary.com/micronetonline/image/upload/q_auto,f_auto,c_limit,w_1545,h_2000/v1778799583/tenants/02941da0-874d-452c-9aa3-e2b0a80d2303/7e9e76a873574df99a187b87fbab5263/Golf-Tournament-Flyer-2026.png'
 			}
 		]
 	}
@@ -384,8 +409,8 @@ const calendarDistrict4L6Events = [
 		locationAddress: '1805 Upas Street, San Diego, CA 92103',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/fd1ef7d0-191f-4b65-8048-8e5adf14b0fe.png?rdr=true'
 			}
 		]
 	},
@@ -402,11 +427,11 @@ const calendarDistrict4L6Events = [
 		links: [
 			{
 				label: 'Register',
-				href: 'https://forms.gle/'
+				href: 'https://forms.gle/BYY1LoAis21quPt9A'
 			},
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/f2b1fc92-5fb7-4d3a-9eaf-21cd6f3b9f3c.png?rdr=true'
 			}
 		]
 	},
@@ -422,8 +447,8 @@ const calendarDistrict4L6Events = [
 		locationAddress: '2270 Hotel Circle N., San Diego, CA 92108',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/81645d41-b089-4449-bc20-7258ec121033.png?rdr=true'
 			}
 		]
 	},
@@ -439,8 +464,8 @@ const calendarDistrict4L6Events = [
 		locationAddress: '',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/f305bc74-fd7b-4e56-b35a-8ef1aa65f159.jpg?rdr=true'
 			}
 		]
 	},
@@ -448,14 +473,16 @@ const calendarDistrict4L6Events = [
 		id: 'district4l6-holiday-party-2026',
 		title: 'District 4-L6 Holiday Party',
 		category: 'district4l6',
-		start: '2026-12-13T00:00:00',
-		end: null,
+		start: '2026-12-13T13:00:00',
+		end: '2026-12-13T17:00:00',
 		timezone: 'America/Los_Angeles',
-		summary: 'District 4-L6 holiday luncheon. Time and location were not included in the newsletter.',
+		summary: 'District 4-L6 holiday luncheon.',
+		locationName: 'Legacy Resort Hotel & Spa',
+		locationAddress: '875 Hotel Cir S, San Diego, CA 92108',		
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/e9bcbea8-a223-4bd2-85c7-c089085c5079.png?rdr=true'
 			}
 		]
 	},
@@ -468,11 +495,11 @@ const calendarDistrict4L6Events = [
 		timezone: 'America/Los_Angeles',
 		summary: 'District 4-L6 LCIF luncheon honoring the legacy of Lions Clubs International founder Melvin Jones.',
 		locationName: 'Elks Lodge',
-		locationAddress: 'El Cajon, CA',
+		locationAddress: '1400 E Washington Ave, El Cajon, CA 92019',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/5892fae1-36c7-441b-b9c5-b041aa149751.png?rdr=true'
 			}
 		]
 	},
@@ -488,8 +515,8 @@ const calendarDistrict4L6Events = [
 		locationAddress: '5795 Nobel Drive, San Diego, CA 92122',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/8ad0a153-b957-46c5-9f4e-b6dfa884d2f7.png?rdr=true'
 			}
 		]
 	},
@@ -501,10 +528,12 @@ const calendarDistrict4L6Events = [
 		end: '2026-06-27T23:59:00',
 		timezone: 'America/Los_Angeles',
 		summary: 'Two-day taco fundraiser hosted by the West Shores Lions Club.',
+		locationName: 'Next to Lorenzo\'s',
+		locationAddress: 'Scrott Drive, (Service Road) Desert Shores, CA',		
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/4ce28855-551e-4045-b869-7622687e065d.jpg?rdr=true'
 			}
 		]
 	},
@@ -520,14 +549,14 @@ const calendarDistrict4L6Events = [
 		locationAddress: '5035 Shawline Street, San Diego, CA 92111',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/e7dec96d-8a6d-43e0-9863-b1118be60ad1.jpg?rdr=true'
 			}
 		]
 	},
 	{
 		id: 'downtown-san-diego-installation-2026',
-		title: 'Downtown San Diego Lions Club Installation Dinner',
+		title: 'The Downtown San Diego Lions Club Installation Dinner',
 		category: 'district4l6',
 		start: '2026-06-30T18:00:00',
 		end: null,
@@ -537,8 +566,8 @@ const calendarDistrict4L6Events = [
 		locationAddress: '310 Market Street, San Diego, CA',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/406e42ac-e64b-4b61-9034-0738cc4d97fc.jpg?rdr=true'
 			}
 		]
 	},
@@ -554,9 +583,18 @@ const calendarDistrict4L6Events = [
 		locationAddress: '12th Street and D Avenue, National City, CA',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
-			}
+				label: 'Flyer 1',
+				href: 'https://files.constantcontact.com/7a2c84d9001/98867f42-b7f8-429c-a074-6e833ec0717a.jpg?rdr=true'
+			},
+			{
+				label: 'Flyer 2',
+				href: 'https://files.constantcontact.com/7a2c84d9001/6bc4e162-909b-486e-b283-f96e1eacff80.png?rdr=true'
+			},
+			{
+				label: 'Flyer 3',
+				href: 'https://files.constantcontact.com/7a2c84d9001/e5acf937-7730-4282-a0fe-e6df1144e232.png?rdr=true'
+			},
+
 		]
 	},
 	{
@@ -571,8 +609,8 @@ const calendarDistrict4L6Events = [
 		locationAddress: '2300 Sweetwater Road, National City, CA 91950',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/dc1e1a38-d3f9-4ceb-b502-afff229541e8.png?rdr=true'
 			}
 		]
 	},
@@ -583,17 +621,17 @@ const calendarDistrict4L6Events = [
 		start: '2027-07-26T00:00:00',
 		end: null,
 		timezone: 'America/Los_Angeles',
-		summary: 'Car show fundraiser. The newsletter lists July 26, 2027; this year should be verified.',
+		summary: 'Car show fundraiser. (Flyer lists 2026)',
 		locationName: 'Mount Miguel High School',
-		locationAddress: '',
+		locationAddress: '9595 Blossom Ln, Spring Valley CA 91977',
 		links: [
 			{
 				label: 'Event Information',
 				href: 'https://www.paypal.com/'
 			},
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/f6fc2a03-0860-476f-a2c2-5eef1f06f7be.jpg?rdr=true'
 			}
 		]
 	},
@@ -607,8 +645,8 @@ const calendarDistrict4L6Events = [
 		summary: 'Installation event hosted by the San Diego Pathfinders Lions Club.',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/a4457962-28b8-4e16-af52-5ad1736f39ef.png?rdr=true'
 			}
 		]
 	},
@@ -622,8 +660,8 @@ const calendarDistrict4L6Events = [
 		summary: 'Golf tournament hosted by the Oceanside Sea Lions.',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/00c78a6e-f2b6-4851-a0fc-663df719ff83.png?rdr=true'
 			}
 		]
 	},
@@ -637,8 +675,8 @@ const calendarDistrict4L6Events = [
 		summary: 'Sixth annual installation of officers and induction of new members.',
 		links: [
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/64afe0da-b6c4-4e61-a29f-d93c4acd93ed.png?rdr=true'
 			}
 		]
 	},
@@ -658,8 +696,8 @@ const calendarDistrict4L6Events = [
 				href: 'https://www.mcievents.com/'
 			},
 			{
-				label: 'Newsletter',
-				href: 'https://myemail.constantcontact.com/Plan-Ahead--Key-Dates-for-Lions-Clubs-.html?soid=1102150419111&aid=j-c4ImDZ1u8'
+				label: 'Flyer',
+				href: 'https://files.constantcontact.com/7a2c84d9001/dde024b2-a5e9-4715-8e01-fa3eea910632.jpg?rdr=true'
 			}
 		]
 	}
