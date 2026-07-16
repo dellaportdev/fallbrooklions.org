@@ -233,38 +233,84 @@
                     day: null,
                     dateKey: '',
                     events: [],
+                    visibleEvents: [],
+                    hiddenEventCount: 0,
                     classes: 'calendar-day calendar-day-empty'
                 };
             },
 
+            // Estimates how many calendar rows a chip needs for its label.
+            getCalendarChipRowSpan(event) {
+                if (window.matchMedia('(max-width: 640px)').matches) {
+                    return 1;
+                }
+
+                const label = event.calendarLabel || event.title || '';
+
+                if (event.calendarRowSpan) {
+                    return Math.max(1, Math.min(4, Number(event.calendarRowSpan)));
+                }
+
+                if (label.length > 80) return 3;
+                if (label.length > 30) return 2;
+
+                return 1;
+            },            
+
+            // Assigns events to the four available calendar-day slots.
+            getCalendarEventLayout(events) {
+                const visibleEvents = [];
+                let nextSlot = 1;
+
+                for (const event of events) {
+                    const rowOffset = Math.max(
+                        0,
+                        Math.min(3, Number(event.calendarRowOffset) || 0)
+                    );
+
+                    const slot = nextSlot + rowOffset;
+
+                    if (slot > 4) break;
+
+                    visibleEvents.push({
+                        event,
+                        slot
+                    });
+
+                    nextSlot = slot + 1;
+                }
+
+                return {
+                    visibleEvents,
+                    hiddenEventCount: events.length - visibleEvents.length
+                };
+            },     
+
             // Builds a populated calendar day cell.
             getCalendarDayCell(day) {
-                const dateKey = `${this.activeYear}-${String(
-                    this.activeMonthIndex + 1
-                ).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dateKey = `${this.activeYear}-${String(this.activeMonthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const events = this.getEventsForDate(
                     this.activeYear,
                     this.activeMonthIndex,
                     day
                 );
 
+                const {
+                    visibleEvents,
+                    hiddenEventCount
+                } = this.getCalendarEventLayout(events);
+
                 return {
                     key: dateKey,
                     day,
                     dateKey,
                     events,
+                    visibleEvents,
+                    hiddenEventCount,
                     classes: [
                         'calendar-day',
-                        events.length
-                            ? 'calendar-day-has-events'
-                            : '',
-                        this.todayDateKey === dateKey
-                            ? 'calendar-day-today'
-                            : '',
-                        this.isDayModalOpen &&
-                            this.modalDateKey === dateKey
-                            ? 'calendar-day-selected'
-                            : ''
+                        events.length ? 'calendar-day-has-events' : '',
+                        this.todayDateKey === dateKey ? 'calendar-day-today' : ''
                     ].filter(Boolean).join(' ')
                 };
             },

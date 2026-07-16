@@ -330,18 +330,31 @@
                     >
                         <div
                             v-if="cell.day"
-                            class="calendar-day-number mb-1 text-xs font-black text-gray-500"
+                            class="calendar-day-number"
                         >
                             {{ cell.day }}
                         </div>
 
                         <div
-                            v-for="event in cell.events"
-                            :class="getChipClass(event)"
-                            :title="event.title"
+                            v-for="item in cell.visibleEvents"
+                            :key="item.event.id"
+                            :class="getChipClass(item.event)"
+                            :style="{ gridRow: item.slot }"
+                            :title="item.event.title"
                         >
-                            <i :class="'fa-solid ' + getCategory(event.category).icon"></i>
-                            <span>{{ event.calendarLabel || event.title }}</span>
+                            <i :class="'fa-solid ' + getCategory(item.event.category).icon"></i>
+
+                            <span class="calendar-chip-label">
+                                {{ item.event.calendarLabel || item.event.title }}
+                            </span>
+                        </div>
+
+                        <div
+                            v-if="cell.hiddenEventCount"
+                            class="calendar-day-more"
+                            :title="cell.hiddenEventCount + ' more events'"
+                        >
+                            +{{ cell.hiddenEventCount }}
                         </div>
                     </div>
                 </div>
@@ -666,6 +679,7 @@
         </div>
     `;
     };
+    
 
     window.CalendarTemplates = {
         getCalendarTemplate,

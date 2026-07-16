@@ -142,48 +142,41 @@
             /* Dynamic calendar cells */
 
             .calendar-day {
-                @apply relative min-h-24 min-w-0 overflow-hidden bg-white p-2 text-sm transition;
+                @apply relative grid min-w-0 bg-white p-1.5 text-sm transition;
+                grid-template-columns: 1.25rem minmax(0, 1fr);
+                grid-template-rows: repeat(4, minmax(min-content, auto));
+                column-gap: 0.25rem;
+                row-gap: 0.2rem;
+                align-content: start;
+                min-height: 9rem;
             }
 
-            .calendar-day-empty {
-                @apply bg-gray-50;
-            }
-
-            .calendar-day-has-events {
-                @apply z-10 cursor-pointer touch-manipulation select-none;
-            }
-
-            .calendar-day-has-events:hover {
-                @apply bg-yellow-50;
-            }
-
-            .calendar-day-has-events:focus-visible {
-                @apply z-20 outline-none ring-4 ring-inset ring-blue-900/30;
-            }
-
-            .calendar-day-selected,
-            .calendar-day-selected.calendar-day-today {
-                @apply ring-4 ring-inset ring-blue-900;
-            }
-
-            .calendar-day-today {
-                @apply bg-blue-50 ring-2 ring-inset ring-blue-200;
-            }
-
-            .calendar-day-today .calendar-day-number {
-                @apply inline-flex h-7 w-7 items-center justify-center rounded-full text-blue-950;
+            .calendar-day-number {
+                @apply row-span-4 self-start text-center text-xs font-black leading-none text-gray-500;
+                grid-column: 1;
+                grid-row: 1 / -1;
+                padding-top: 0.25rem;
             }
 
             .calendar-chip {
-                @apply pointer-events-none mb-1 flex w-full min-w-0 items-center gap-1 rounded-lg border border-solid px-2 py-1 text-left text-xs font-bold leading-tight;
+                @apply flex min-h-0 min-w-0 items-start gap-1 overflow-hidden rounded-lg border border-solid px-2 py-1 text-left text-xs font-bold leading-tight;
+                grid-column: 2;
+                align-self: stretch;
             }
 
-            .calendar-chip span {
-                @apply min-w-0 truncate;
+            .calendar-chip i {
+                @apply mt-0.5 shrink-0;
             }
 
-            .calendar-chip-muted {
-                @apply opacity-60;
+            .calendar-chip-label {
+                @apply min-w-0 whitespace-normal break-words;
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-box-orient: vertical;
+            }
+
+            .calendar-day-more {
+                @apply absolute bottom-0.5 right-1 rounded bg-white/90 px-1 text-[0.6rem] font-black text-gray-500;
             }
 
             /* Shared event components */
