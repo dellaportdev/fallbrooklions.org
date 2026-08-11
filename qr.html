@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QR Codes | Fallbrook Ranch Lions Club</title>
+
+    <link href="https://fallbrooklions.org/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="preload" href="./src/tailwind.min.css" as="style" />
+    <link rel="stylesheet" href="./src/tailwind.min.css" media="all" />
+    <link rel="stylesheet" href="./src/stylesheet.css" media="all" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap"
+        rel="stylesheet">
+    <script data-goatcounter="https://lionsclub.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
+    <script src="./src/site.js" defer></script>
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="site-body" id="top">
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <nav class="site-nav nav-gradient" role="navigation" aria-label="Main Navigation">
+        <input type="checkbox" id="nav-check" />
+        <div class="site-nav-inner">
+            <div class="site-nav-row">
+                <a href="./index.html#top" class="site-brand">
+                    <img src="./images/logo/FRLC AvocadoLion-blue and gold.svg" alt="Fallbrook Ranch Lions Club Logo"
+                        class="site-brand-logo" fetchpriority="high" style="max-width: 200px;" />
+                    <span class="brand-title">Fallbrook Ranch<br>Lions Club</span>
+                </a>
+
+                <label for="nav-check" class="nav-menu-button">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </label>
+
+                <ul class="nav-links">
+                    <li><a href="./index.html#about" class="nav-link">About</a></li>
+                    <li><a href="./index.html#volunteer" class="nav-link">Volunteer</a></li>
+                    <li><a href="./index.html#meetings" class="nav-link">Meetings</a></li>
+                    <li><a href="./calendar.html" class="nav-link">Calendar</a></li>
+                    <li>
+                        <a href="./donate.html" class="nav-donate">
+                            <i class="fa-solid fa-hand-holding-heart"></i> Donate
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-mobile">
+                <ul class="nav-mobile-list">
+                    <li><a href="./index.html#about" class="nav-mobile-link">About</a></li>
+                    <li><a href="./index.html#volunteer" class="nav-mobile-link">Volunteer</a></li>
+                    <li><a href="./index.html#meetings" class="nav-mobile-link">Meetings</a></li>
+                    <li><a href="./calendar.html" class="nav-mobile-link">Calendar</a></li>
+                    <li>
+                        <a href="./donate.html" class="nav-donate nav-donate-mobile">
+                            <i class="fa-solid fa-hand-holding-heart"></i> Donate
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main" class="page-main" role="main" tabindex="-1">
+		<div class="page-shell">
+        <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+        <section class="max-w-4xl p-5 mx-auto bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="bg-blue-50 border-b border-blue-100 px-5 py-4 sm:px-7">
+                <h2 class="text-2xl font-bold text-navy mb-2">
+                    Generate a QR Code Image
+                </h2>
+
+                <p class="text-gray-600 leading-relaxed">
+                    Generate a QR code image for a website address. You can customize the size and colors of the QR code, then download it as a PNG image.
+                </p>
+            </div>
+
+            <div class="grid gap-7 p-5 sm:p-7 lg:grid-cols-2">
+                <!-- Controls -->
+                <div class="space-y-5">
+                    <div>
+                        <p for="qr-text" class="block text-sm font-bold text-gray-800 mb-2">
+                            Website address
+                        </p>
+
+                        <input id="qr-text" type="url" value="https://fallbrooklions.org" placeholder="https://example.com/page"
+                            class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200">
+
+                        <p class="mt-2 text-sm text-gray-500">
+                            Include <strong>https://</strong> at the beginning of the address.
+                        </p>
+                    </div>
+                    <br>
+
+                    <div>
+                        <p for="qr-size" class="block text-sm font-bold text-gray-800 mb-2 mt-3 ">
+                            Image size
+                        </p>
+
+                        <select id="qr-size"
+                            class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200">
+                            <option value="256">Small — 256 × 256 px</option>
+                            <option value="320" selected>Standard — 320 × 320 px</option>
+                            <option value="512">Large — 512 × 512 px</option>
+                            <option value="1024">Print — 1024 × 1024 px</option>
+                        </select>
+                    </div>
+                    <br>
+                    <fieldset class="">
+                        <p class="block text-sm font-bold text-gray-800 mt-3 mb-3">
+                            QR code colors
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="block">
+                                <span class="block text-sm text-gray-600 mb-2">
+                                    Code color
+                                </span>
+
+                                <span class="flex items-center gap-3 rounded-lg border border-gray-300 bg-white p-2">
+                                    <input id="qr-dark-color" type="color" value="#000000"
+                                        class="h-10 w-12 cursor-pointer rounded border-0 bg-transparent">
+                                    <span id="qr-dark-value" class="text-sm font-semibold text-gray-700">
+                                        #000000
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="block">
+                                <span class="block text-sm text-gray-600 mb-2">
+                                    Background
+                                </span>
+
+                                <span class="flex items-center gap-3 rounded-lg border border-gray-300 bg-white p-2">
+                                    <input id="qr-light-color" type="color" value="#ffffff"
+                                        class="h-10 w-12 cursor-pointer rounded border-0 bg-transparent">
+                                    <span id="qr-light-value" class="text-sm font-semibold text-gray-700">
+                                        #FFFFFF
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <p class="mt-2 text-sm text-gray-500">
+                            Use a dark code color against a light background for reliable scanning.
+                        </p>
+                    </fieldset>
+                    <br>
+
+                    <div class="flex flex-col justify-center gap-3 sm:flex-row">
+                        <button id="generate-qr-button" type="button"
+                            class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 py-3 font-bold transition-colors hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 mr-3">
+                            <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
+                            Generate QR Code
+                        </button>
+
+                        <button id="reset-qr-button" type="button"
+                            class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-5 py-3 font-semibold text-gray-700 transition-colors hover:bg-gray-50 ">
+                            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="flex flex-col">
+                    <div
+                        class="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 p-5">
+                        <p class="mb-4 text-sm font-bold uppercase tracking-wider text-gray-500">
+                            Preview
+                        </p>
+
+                        <div
+                            class="flex min-h-64 w-full items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                            <canvas id="qr-code" class="h-auto max-w-full" aria-label="Generated QR code preview"></canvas>
+                        </div>
+
+                        <p id="qr-status" class="mt-4 min-h-5 text-center text-sm text-gray-600" role="status"
+                            aria-live="polite"></p>
+                    </div>
+
+                    <button id="download-qr-button" type="button"
+                        class="mt-4 inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-yellow-400 px-5 py-3 font-bold text-gray-900 transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                        Download PNG
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const qrDefaults = {
+                text: 'https://fallbrooklions.org',
+                size: '320',
+                darkColor: '#014d93',
+                lightColor: '#ffffff'
+            };
+
+            const qrText = document.getElementById('qr-text');
+            const qrSize = document.getElementById('qr-size');
+            const qrDarkColor = document.getElementById('qr-dark-color');
+            const qrLightColor = document.getElementById('qr-light-color');
+            const qrDarkValue = document.getElementById('qr-dark-value');
+            const qrLightValue = document.getElementById('qr-light-value');
+            const qrCanvas = document.getElementById('qr-code');
+            const qrStatus = document.getElementById('qr-status');
+
+            async function generateQrCode() {
+                const text = qrText.value.trim();
+
+                if (!text) {
+                    qrStatus.textContent = 'Enter a website address to create a QR code.';
+                    qrStatus.className = 'mt-4 min-h-5 text-center text-sm font-semibold text-red-700';
+                    return false;
+                }
+
+                try {
+                    await QRCode.toCanvas(qrCanvas, text, {
+                        width: Number(qrSize.value),
+                        margin: 2,
+                        errorCorrectionLevel: 'H',
+                        color: {
+                            dark: qrDarkColor.value,
+                            light: qrLightColor.value
+                        }
+                    });
+
+                    qrStatus.textContent = `${qrSize.value} × ${qrSize.value} pixel QR code ready`;
+                    qrStatus.className = 'mt-4 min-h-5 text-center text-sm font-semibold text-green-700';
+
+                    return true;
+                } catch (error) {
+                    console.error(error);
+
+                    qrStatus.textContent = 'The QR code could not be generated.';
+                    qrStatus.className = 'mt-4 min-h-5 text-center text-sm font-semibold text-red-700';
+
+                    return false;
+                }
+            }
+
+            async function downloadQrCode() {
+                const generated = await generateQrCode();
+
+                if (!generated) return;
+
+                const link = document.createElement('a');
+                link.download = `qr-code-${qrSize.value}px.png`;
+                link.href = qrCanvas.toDataURL('image/png');
+                link.click();
+            }
+
+            function updateQrColors() {
+                qrDarkValue.textContent = qrDarkColor.value.toUpperCase();
+                qrLightValue.textContent = qrLightColor.value.toUpperCase();
+                generateQrCode();
+            }
+
+            function resetQrCode() {
+                qrText.value = qrDefaults.text;
+                qrSize.value = qrDefaults.size;
+                qrDarkColor.value = qrDefaults.darkColor;
+                qrLightColor.value = qrDefaults.lightColor;
+
+                updateQrColors();
+            }
+
+            document
+                .getElementById('generate-qr-button')
+                .addEventListener('click', generateQrCode);
+
+            document
+                .getElementById('download-qr-button')
+                .addEventListener('click', downloadQrCode);
+
+            document
+                .getElementById('reset-qr-button')
+                .addEventListener('click', resetQrCode);
+
+            qrSize.addEventListener('change', generateQrCode);
+            qrDarkColor.addEventListener('input', updateQrColors);
+            qrLightColor.addEventListener('input', updateQrColors);
+
+            qrText.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') generateQrCode();
+            });
+
+            generateQrCode();
+        </script>
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <img src="https://fallbrooklions.org/images/logo/lionlogo_1500.png" alt="Lions International Logo"
+                class="site-footer-logo" />
+            <p class="site-footer-credit">Website by <a href="https://dellaport.dev" target="_blank"
+                    class="underline">Dellaport.dev</a>, a local Lions Club member.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

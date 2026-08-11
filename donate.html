@@ -27,6 +27,7 @@
     <script data-goatcounter="https://lionsclub.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
 	<script src="./src/site.js" defer></script>
+	<link rel="stylesheet" href="./src/donate.css" media="all" />
 </head>
 <body class="site-body" id="top">
 	<a href="#main" class="skip-link">Skip to main content</a>
@@ -88,31 +89,54 @@
 			<section id="how-your-gift-helps" class="section-card">
 				<div class="divider mb-5"><span class="divider-label">How You Can Help</span></div>
 				<h2 class="text-2xl font-bold text-navy mb-3">Support a local child&rsquo;s vision care</h2>
-				<p class="donate-copy">You can help a local child see more clearly and reach their full potential. Any amount you can give helps.</p>
+				<p class="donate-copy mb-3">You can help a local child see more clearly and reach their full potential. Any amount you
+					can give helps.</p>
 
-				<div class="donation-grid donation-impact-grid mt-4">
-					<div class="donation-card donation-impact-card">
+				<ul class="donation-impact-grid mt-4">
+					<li class="donation-impact-card">
+						<span class="donation-impact-icon"><i class="fa-solid fa-eye"></i></span>
 						<p class="donation-amount">$25</p>
 						<p class="donation-description">Can help offset the cost of a vision screening.</p>
-					</div>
-					<div class="donation-card donation-impact-card">
+					</li>
+					<li class="donation-impact-card">
+						<span class="donation-impact-icon"><i class="fa-solid fa-user-doctor"></i></span>
 						<p class="donation-amount">$50</p>
 						<p class="donation-description">Can contribute toward an eye exam.</p>
-					</div>
-					<div class="donation-card donation-impact-card">
+					</li>
+					<li class="donation-impact-card">
+						<span class="donation-impact-icon"><i class="fa-solid fa-glasses"></i></span>
 						<p class="donation-amount">$100</p>
 						<p class="donation-description">Can help provide a complete exam and a pair of glasses.</p>
-					</div>
-				</div>
+					</li>
+				</ul>
 
 				<div class="donate-cta-panel">
-					<div>
-						<h3 class="donate-cta-title mt-4">Give through our Sight Campaign page</h3>
-						<p class="donate-cta-copy">Donations made through the Fallbrook Ranch Lions Club Foundation support local student vision care through the Fallbrook Ranch Lions Club.</p>
+					<div class="donate-cta-qr">
+						<img src="./images/qr/sight-campaign.png" alt="QR code linking to this Sight Campaign page"
+							class="donate-qr-image" width="208" height="208" loading="lazy">
+						<p class="donate-qr-caption">Save this code to share this page with others</p>
 					</div>
-					<a href="https://givebutter.com/vVKfD5" target="_blank" rel="noopener" class="btn-primary btn-large donate-cta-button mt-4">
-						<i class="fa-solid fa-arrow-up-right-from-square"></i> Donate on Givebutter
-					</a>
+
+					<div class="donate-cta-body">
+						<h3 class="donate-cta-title mb-2 text-xl">Give through our Sight Campaign page</h3>
+						<p class="donate-cta-copy">Donations made through the Fallbrook Ranch Lions Club Foundation support local
+							student vision care through the Fallbrook Ranch Lions Club.</p>
+
+						<div class="donate-cta-actions">
+							<a href="https://givebutter.com/vVKfD5" target="_blank" rel="noopener"
+								class="btn-primary btn-large donate-cta-button">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i> Donate on Givebutter
+							</a>
+							<a href="./files/FRLC Sight Campaign.pdf" target="_blank" rel="noopener"
+								class="btn-outline-navy donate-cta-button">
+								<i class="fa-solid fa-file-pdf"></i> Sight Campaign Flyer
+							</a>
+							<a href="./files/FRLC Sight Campaign-Spanish.pdf" target="_blank"
+								rel="noopener" class="btn-outline-navy donate-cta-button" hreflang="es" lang="es">
+								<i class="fa-solid fa-file-pdf"></i> Folleto en Espa&ntilde;ol
+							</a>
+						</div>
+					</div>
 				</div>
 			</section>
 
@@ -163,14 +187,16 @@
 
 			<section class="tax-note-card">
 				<h2 class="tax-note-title">Tax-deductible donation note</h2>
-				<p class="tax-note-copy">Tax-deductible donations may be made to the Fallbrook Ranch Lions Club Foundation 501(c)(3). Donations to Fallbrook Ranch Lions Club are not tax-deductible. All donations to the foundation benefit Fallbrook Ranch Lions Club.</p>
+				<p class="tax-note-copy">The Fallbrook Ranch Lions Club Foundation (EIN 41-4225752) is a tax-exempt organization under Section 501(c)(3) of the
+				Internal Revenue Code. Contributions to Fallbrook Ranch Lions Club Foundation are tax-deductible as permitted by law.
+				Contributions made directly to Fallbrook Ranch Lions Club are not tax-deductible. All donations to the foundation
+				benefit Fallbrook Ranch Lions Club.</p>
 			</section>
 		</div>
 	</main>
 	<footer class="site-footer">
 		<div class="site-footer-inner">
 			<img src="https://fallbrooklions.org/images/logo/lionlogo_1500.png" alt="Lions International Logo" class="site-footer-logo" />
-			<p class="site-footer-text">The Fallbrook Ranch Lions Club Foundation (EIN 41-4225752) is a tax-exempt organization under Section 501(c)(3) of the Internal Revenue Code. Contributions to the Foundation are tax-deductible as permitted by law. Contributions made directly to Fallbrook Ranch Lions Club are not tax-deductible.</p>
 			<p class="site-footer-credit">Website by <a href="https://dellaport.dev" target="_blank" class="underline">Dellaport.dev</a>, a local Lions Club member.</p>
 		</div>
 	</footer>
