@@ -125,6 +125,10 @@
                     <fieldset class="">
                         <p class="block text-sm font-bold text-gray-800 mt-3 mb-3">
                             QR code colors
+
+                            <button id="swap-qr-colors" type="button" class="float-right cursor-pointer font-semibold text-blue-700 hover:text-blue-900 hover:underline" style="float:right;">
+                                Swap Colors
+                            </button>
                         </p>
 
                         <div class="grid grid-cols-2 gap-4">
@@ -142,7 +146,7 @@
                             </label>
 
                             <label class="block">
-                                <span class="block text-sm text-gray-600 mb-2">
+                                <span class="block mb-2 text-sm text-gray-600">
                                     Background
                                 </span>
 
@@ -157,23 +161,14 @@
 
                         <p class="mt-2 text-sm text-gray-500">
                             Use a dark code color against a light background for reliable scanning.
+                            <button id="use-lions-colors" type="button" class="cursor-pointer font-semibold text-blue-700 hover:text-blue-900 hover:underline">
+                                Use Lions Club colors.
+                            </button>
+
                         </p>
                     </fieldset>
-                    <br>
-
-                    <div class="flex flex-col justify-center gap-3 sm:flex-row">
-                        <button id="generate-qr-button" type="button" class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 py-3 font-bold transition-colors hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 mr-3" style="display:none;"">
-                            <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
-                            Generate QR Code
-                        </button>
-
-                        <button id="reset-qr-button" type="button" class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-5 py-3 font-semibold text-gray-700 transition-colors hover:bg-gray-50 ">
-                            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
-                            Reset
-                        </button>
-                    </div>
                 </div>
-
+                <br>
                 <!-- Preview -->
                 <div class="flex flex-col">
                     <div class="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 p-5">
@@ -188,11 +183,19 @@
                         <p id="qr-status" class="mt-4 min-h-5 text-center text-sm text-gray-600" role="status"
                             aria-live="polite"></p>
                     </div>
-
-                    <button id="download-qr-button" type="button" class="mt-4 inline-flex cursor-pointer gap-2 rounded-lg bg-yellow-400 px-5 py-3 font-bold text-gray-900 transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300">
-                        <i class="fa-solid fa-download" aria-hidden="true"></i>
-                        Download PNG
-                    </button>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <button id="download-qr-button" type="button" class="mt-4 inline-flex cursor-pointer gap-2 rounded-lg bg-yellow-400 px-5 py-3 font-bold text-gray-900 transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                            <i class="fa-solid fa-download" aria-hidden="true"></i>
+                            Download PNG
+                        </button>
+                        <button id="generate-qr-button" type="button" class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 py-3 font-bold transition-colors hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 mr-3" style="display:none;""><i class=" fa-solid fa-qrcode" aria-hidden="true"></i>
+                            Generate QR Code
+                        </button>
+                        <button id="reset-qr-button" type="button" class="mt-4 inline-flex cursor-pointer gap-2 rounded-lg bg-yellow-400 px-5 py-3 font-bold text-gray-900 transition-colors hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300 ">
+                            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+                            Reset
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -285,6 +288,25 @@
             document
                 .getElementById('reset-qr-button')
                 .addEventListener('click', resetQrCode);
+
+            document
+                .getElementById('use-lions-colors')
+                .addEventListener('click', function () {
+                    qrDarkColor.value = '#014d93';
+                    qrLightColor.value = '#ffcc00';
+                    updateQrColors();
+                });
+
+            document
+                .getElementById('swap-qr-colors')
+                .addEventListener('click', function () {
+                    const previousDarkColor = qrDarkColor.value;
+
+                    qrDarkColor.value = qrLightColor.value;
+                    qrLightColor.value = previousDarkColor;
+
+                    updateQrColors();
+                });                
 
             qrSize.addEventListener('change', generateQrCode);
             qrDarkColor.addEventListener('input', updateQrColors);
