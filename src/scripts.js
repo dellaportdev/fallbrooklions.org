@@ -258,10 +258,13 @@ function initSwiper() {
     });
 }
 
-function mailTo(name) {
+function mailTo(event, name) {
+    event.preventDefault();
+
     const member = members.find(m => m.name === name);
+
     if (member && member.email) {
-        window.location.href = "mailto:" + member.email;
+        window.location.href = 'mailto:' + member.email;
     } else {
         alert("We don't have an email on file for " + name + " at the time.");
     }
