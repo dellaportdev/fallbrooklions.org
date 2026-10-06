@@ -1,11 +1,11 @@
 		const memberPhotoPath = './images/members/';
 		const members = [
-			{ name: 'Alfonso Ramos', 	role: 'President', 				image: 'alfonso.png', 	email:'fallbrooklions@gmail.com'},
-			{ name: 'Gus Romero', 		role: 'First Vice President', 	image: 'gus.png' },
-			{ name: 'Sharon Zornes', 	role: 'Treasurer', 				image: 'sharon.png' },
-			{ name: 'Karina Young', 	role: 'Secretary', 				image: 'karina.png' },
-			{ name: 'Val Fujihara', 	role: 'Membership Chairperson', image: 'val.png', 		email:'valjk@att.net' },
-			{ name: 'Lorene Morris', 	role: 'Service Chairperson,Second Vice President', 	image: 'lorene.png' },
+			{ name: 'Alfonso Ramos', 	role: 'President', 									image: 'alfonso.png', 	email: 'president@fallbrooklions.org' },
+			{ name: 'Gus Romero', 		role: 'First Vice President', 						image: 'gus.png', 		email: 'FirstVP@fallbrooklions.org' },
+			{ name: 'Sharon Zornes', 	role: 'Treasurer', 									image: 'sharon.png', 	email: 'treasurer@fallbrooklions.org' },
+			{ name: 'Karina Young', 	role: 'Secretary', 									image: 'karina.png', 	email: 'secretary@fallbrooklions.org' },
+			{ name: 'Val Fujihara', 	role: 'Membership Chairperson', 					image: 'val.png', 		email: 'membershipchair@fallbrooklions.org' },
+			{ name: 'Lorene Morris', 	role: 'Service Chairperson,Second Vice President', 	image: 'lorene.png', 	email: 'servicechair@fallbrooklions.org' },
 		];
 
 		const photoPath = 'https://fallbrooklions.org/images/photos/';
